@@ -3,6 +3,8 @@
 
 (def initial-app-db {:auth {:uid nil}
                      :errors {}
+                     :nav {:active-page :dashboard
+                           :active-nav :dashboard }
                      :bill {:bill-01 {:id :rec-01
                                          :divide? false
                                          :contractor-id 1
