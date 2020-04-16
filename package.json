@@ -13,7 +13,7 @@
     "clean": "rm -rf target && rm -rf public/js"
   },
   "dependencies": {
-    "@smooth-ui/core-sc": "11.1.5",
+    "@smooth-ui/core-sc": "9.0.2",
     "create-react-class": "^15.6.3",
     "highlight.js": "9.18.1",
     "react": "^16.13.1",
