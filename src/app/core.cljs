@@ -4,6 +4,7 @@
             ;; -- auth
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]
+            [app.auth.views.profile :refer [profile]]
             [app.auth.events]
             [app.auth.subs]
             ;; -- pages --
@@ -34,6 +35,7 @@
     :categories [categories]
     :vendors [vendors]
     :warranties [warranties]
+    :profile [profile]
     [dashboard]))
 
 (defn app

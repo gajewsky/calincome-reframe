@@ -30,10 +30,14 @@
                     :name "Vendors"
                     :href "#vendors"
                     :dispatch #(rf/dispatch [:set-active-nav :vendors])}
-                   {:id :warranties
-                    :name "Warranty"
-                    :href "#warranties"
-                    :dispatch #(rf/dispatch [:set-active-nav :warranties])}]]
+                   {:id :vendors
+                    :name "Vendors"
+                    :href "#vendors"
+                    :dispatch #(rf/dispatch [:set-active-nav :vendors])}
+                   {:id :profile
+                    :name "Profile"
+                    :href "#profile"
+                    :dispatch #(rf/dispatch [:set-active-nav :profile])}]]
     [:> Box {:display "flex"
              :justify-content "flex-end"
              :py 1}
