@@ -1,7 +1,8 @@
 (ns app.auth.views.log-in
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
-            ["@smooth-ui/core-sc" :refer [Row Col FormGroup Label Input Box Button]]))
+            [app.components.form-group :refer [form-group]]
+            ["@smooth-ui/core-sc" :refer [Row Col Box Button]]))
 
 (defn log-in
   []
@@ -10,20 +11,14 @@
     (fn []
       [:> Row {:justify-content "center"}
        [:> Col {:sm 12 :md 6}
-        [:> FormGroup
-         [:> Label {:html-for :email} "Email"]
-         [:> Input {:control true
-                    :id :email
-                    :type "email"
-                    :value (:email @values)
-                    :on-change #(swap! values assoc :email (.. % -target -value))}]]
-        [:> FormGroup
-         [:> Label {:html-for :password} "Password"]
-         [:> Input {:control true
-                    :id :password
-                    :type "password"
-                    :value (:password @values)
-                    :on-change #(swap! values assoc :password (.. % -target -value))}]]
+        [form-group {:id :email
+                     :label "Email"
+                     :type "email"
+                     :values values}]
+        [form-group {:id :password
+                     :label "Password"
+                     :type "password"
+                     :values values}]
         [:> Box {:display "flex"
                  :justify-content "space-between"}
          [:> Box {:py 1
@@ -32,5 +27,5 @@
                :on-click #(rf/dispatch [:set-active-nav :sign-up])}
            "Need an account? Register!"]]
          [:> Box
-          [:> Button {:on-click #(js/console.log "log-in")}
+          [:> Button {:on-click #(rf/dispatch [:log-in @values])}
            "Log in"]]]]])))

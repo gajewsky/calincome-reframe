@@ -1,9 +1,12 @@
 (ns app.core
   (:require [reagent.dom :as r]
             [re-frame.core :as rf]
-            ;; -- pages --
+            ;; -- auth
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]
+            [app.auth.events]
+            [app.auth.subs]
+            ;; -- pages --
             [app.dashboard.views.dashboard :refer [dashboard]]
             [app.incomes.views.incomes :refer [incomes]]
             [app.expenses.views.expenses :refer [expenses]]
