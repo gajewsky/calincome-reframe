@@ -1,7 +1,7 @@
 (ns app.nav.views.authenticated
   (:require [re-frame.core :as rf]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["@smooth-ui/core-sc" :refer [Box]]))
+            ["@smooth-ui/core-sc" :refer [Box Button]]))
 
 (defn authenticated
   []
@@ -30,10 +30,6 @@
                     :name "Vendors"
                     :href "#vendors"
                     :dispatch #(rf/dispatch [:set-active-nav :vendors])}
-                   {:id :vendors
-                    :name "Vendors"
-                    :href "#vendors"
-                    :dispatch #(rf/dispatch [:set-active-nav :vendors])}
                    {:id :profile
                     :name "Profile"
                     :href "#profile"
@@ -41,11 +37,13 @@
     [:> Box {:display "flex"
              :justify-content "flex-end"
              :py 1}
+
      (for [{:keys [id name href dispatch]} nav-items]
        [nav-item {:key id
                   :id id
                   :name name
                   :href href
                   :dispatch dispatch
-                  :active-nav active-nav}])]))
+                  :active-nav active-nav}])
+     [:> Button { :on-click #(rf/dispatch [:log-out])} "Logout"]]))
 
