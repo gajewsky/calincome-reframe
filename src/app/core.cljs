@@ -1,6 +1,8 @@
 (ns app.core
   (:require [reagent.dom :as r]
             [re-frame.core :as rf]
+            [app.db]
+            [app.router :as router]
             ;; -- auth
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]
@@ -19,7 +21,6 @@
             [app.nav.views.nav :refer [nav]]
             [app.nav.events]
             [app.nav.subs]
-            [app.db]
             [app.theme :refer [calincome-theme]]
             ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))
 
@@ -53,10 +54,11 @@
 
 (defn ^:dev/after-load start
   []
-  (rf/dispatch-sync [:initialize-db])
   (r/render [app]
             (.getElementById js/document "app")))
 
 (defn ^:export init
   []
+  (router/start!)
+  (rf/dispatch-sync [:initialize-db])
   (start))

@@ -34,7 +34,8 @@
                                                  :email email
                                                  :password password
                                                  :img "img/avatar.svg"}}))
-     :dispatch [:set-active-nav :saved]}))
+     :dispatch [:set-active-nav :dashboard]
+     :navigate-to {:path "/dashboard"}}))
 
 (reg-event-fx
   :log-in
@@ -53,11 +54,13 @@
         {:db (-> db
                  (assoc-in [:auth :uid] email)
                  (update-in [:errors] dissoc :email))
-         :dispatch [:set-active-nav :dashboard]}))))
+         :dispatch [:set-active-nav :dashboard]
+         :navigate-to {:path "/dashboard"}}))))
 
 (reg-event-fx
   :log-out
   remove-user-interceptors
   (fn [{:keys [db]} _]
     {:db (assoc-in db [:auth :uid] nil)
-     :dispatch [:set-active-nav :recipes]}))
+     :dispatch [:set-active-nav :log-in]
+     :navigate-to {:path "/log-in"}}))
