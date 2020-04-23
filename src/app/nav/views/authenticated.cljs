@@ -15,10 +15,10 @@
                     :name "Incomes"
                     :href (router/path-for :incomes)
                     :dispatch #(rf/dispatch [:set-active-nav :incomes])}
-                   {:id :expenses
-                    :name "Expenses"
-                    :href (router/path-for :expenses)
-                    :dispatch #(rf/dispatch [:set-active-nav :expenses])}
+                   {:id :bills
+                    :name "Bills"
+                    :href (router/path-for :bills)
+                    :dispatch #(rf/dispatch [:set-active-nav :bills])}
                    {:id :categories
                     :name "Categories"
                     :href (router/path-for :categories)

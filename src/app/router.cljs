@@ -6,7 +6,7 @@
 (def routes ["/" {""              :dashboard
                   "dashboard"     {"" :dashboard [:recipe-id] :recipe}
                   "incomes/"      {"" :incomes [:income-id] :income}
-                  "expenses/"     {"" :expenses [:expense-id] :expense}
+                  "bills/"        {"" :bills [:bill-id] :bill}
                   "categories/"   {"" :categories [:category-id] :category}
                   "vendors/"      {"" :vendors [:vendor-id] :vendor}
                   "profile"       :profile

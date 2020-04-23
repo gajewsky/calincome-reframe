@@ -3,7 +3,7 @@
             [re-frame.core :as rf]
             [app.db]
             [app.router :as router]
-            ;; -- auth
+            ;; -- auth --
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.profile :refer [profile]]
@@ -12,11 +12,13 @@
             ;; -- pages --
             [app.dashboard.views.dashboard :refer [dashboard]]
             [app.incomes.views.incomes :refer [incomes]]
-            [app.expenses.views.expenses :refer [expenses]]
             [app.savings.views.savings :refer [savings]]
             [app.categories.views.categories :refer [categories]]
             [app.vendors.views.vendors :refer [vendors]]
             [app.warranties.views.warranties :refer [warranties]]
+            ;; -- bills --
+            [app.bills.views.bills-page :refer [bills-page]]
+            [app.bills.subs]
             ;; -- nav ---
             [app.nav.views.nav :refer [nav]]
             [app.nav.events]
@@ -31,7 +33,7 @@
     :log-in [log-in]
     :dashboard [dashboard]
     :incomes [incomes]
-    :expenses [expenses]
+    :bills [bills-page]
     :savings [savings]
     :categories [categories]
     :vendors [vendors]

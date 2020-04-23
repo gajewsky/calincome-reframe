@@ -5,27 +5,34 @@
                      :errors {}
                      :nav {:active-page :dashboard
                            :active-nav :dashboard }
-                     :bill {:bill-01 {:id :rec-01
-                                         :divide? false
-                                         :contractor-id 1
-                                         :user-id 1
-                                         :date "2020-01-03"
-                                         :created-at "2020-01-01"
-                                         :expenses {:exp-01 {:id :exp-01
-                                                             :description "Pasta"
-                                                             :value 203
-                                                             :subcategory-id 1
-                                                             :track? false }
-                                                    :exp-02 {:id :exp-02
-                                                             :description "Pesto"
-                                                             :value 432
-                                                             :subcategory-id 1
-                                                             :track? false }
-                                                    :exp-03 {:id :exp-02
-                                                             :description "Bread"
-                                                             :value 1222
-                                                             :subcategory-id 1
-                                                             :track? false }}}}
+                     :bills {:bill-01 {:id :bill-01
+                                       :divide? false
+                                       :contractor-id 1
+                                       :user-id 1
+                                       :date "2020-01-03"
+                                       :created-at "2020-01-01"
+                                       :expenses {:exp-01 {:id :exp-01
+                                                           :description "Pasta"
+                                                           :value 203
+                                                           :subcategory-id 1
+                                                           :track? false }
+                                                  :exp-02 {:id :exp-02
+                                                           :description "Pesto"
+                                                           :value 432
+                                                           :subcategory-id 1
+                                                           :track? false }}}
+                             :bill-02 {:id :bill-02
+                                       :divide? false
+                                       :contractor-id 2
+                                       :user-id 1
+                                       :date "2020-01-04"
+                                       :created-at "2020-01-01"
+                                       :expenses { :exp-03 {:id :exp-02
+                                                           :description "Bread"
+                                                           :value 1222
+                                                           :subcategory-id 1
+                                                           :track? false }}}}
+
                      :users {"admin@example.com" {:uid "admin@example.com"
                                                   :profile {:first-name "Admin"
                                                             :last-name "Admin"
@@ -34,8 +41,8 @@
                                                   :role :user }}})
 
 (rf/reg-event-fx
- :initialize-db
- [(rf/inject-cofx :local-store-user)]
- (fn [{:keys [local-store-user]} _]
-   {:db (assoc-in initial-app-db [:auth] local-store-user)}))
+  :initialize-db
+  [(rf/inject-cofx :local-store-user)]
+  (fn [{:keys [local-store-user]} _]
+    {:db (assoc-in initial-app-db [:auth] local-store-user)}))
 
