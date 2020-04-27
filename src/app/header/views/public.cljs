@@ -1,8 +1,8 @@
-(ns app.nav.views.public
+(ns app.header.views.public
   (:require [re-frame.core :as rf]
             [app.router :as router]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["@smooth-ui/core-sc" :refer [Box]]))
+            ["rebass" :refer [Box]]))
 
 (defn public
   []

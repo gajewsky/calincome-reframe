@@ -21,10 +21,13 @@
             [app.bills.subs]
             ;; -- nav ---
             [app.nav.views.nav :refer [nav]]
+            [app.header.views.header :refer [header]]
             [app.nav.events]
             [app.nav.subs]
+            ["@rebass/preset" :refer [preset]]
             [app.theme :refer [calincome-theme]]
-            ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))
+            ["rebass" :refer [Box]]
+            ["emotion-theming" :refer [ThemeProvider]]))
 
 (defn pages
   [page-name]
@@ -45,11 +48,12 @@
   []
   (let [active-nav @(rf/subscribe [:active-nav])]
     [:<>
-     [:> Normalize]
      [:> ThemeProvider {:theme calincome-theme}
-      [:> Grid {:fluid false}
-       [:> Row
-        [:> Col
+      [header]
+      [:> Box {:align-items "center"
+               :sx {:max-width 1024, :mx "auto", :px 3}}
+       [:> Box
+        [:> Box
          [nav]
          [pages active-nav]]]]]]))
 
