@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]
             [app.router :as router]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["@smooth-ui/core-sc" :refer [Box]]))
+            ["@material-ui/core" :refer [Box]]))
 
 (defn public
   []

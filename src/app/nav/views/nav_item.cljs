@@ -1,5 +1,5 @@
 (ns app.nav.views.nav-item
-  (:require ["@smooth-ui/core-sc" :refer [Box]]))
+  (:require ["@material-ui/core" :refer [Box]]))
 
 (defn nav-item
   [{:keys [id href name dispatch active-nav]}]

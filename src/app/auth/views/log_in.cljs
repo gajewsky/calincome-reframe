@@ -2,15 +2,15 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.components.form-group :refer [form-group]]
-            ["@smooth-ui/core-sc" :refer [Row Col Box Button]]))
+            ["@material-ui/core" :refer [Box Button]]))
 
 (defn log-in
   []
   (let [initial-values {:email "" :password ""}
         values (r/atom initial-values)]
     (fn []
-      [:> Row {:justify-content "center"}
-       [:> Col {:sm 12 :md 6}
+      [:> Box
+       [:> Box
         [form-group {:id :email
                      :label "Email"
                      :type "email"
@@ -19,10 +19,8 @@
                      :label "Password"
                      :type "password"
                      :values values}]
-        [:> Box {:display "flex"
-                 :justify-content "space-between"}
-         [:> Box {:py 1
-                  :pr 2}
+        [:> Box
+         [:> Box
           [:a {:href "#sign-up"
                :on-click #(rf/dispatch [:set-active-nav :sign-up])}
            "Need an account? Register!"]]

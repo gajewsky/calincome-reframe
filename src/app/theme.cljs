@@ -1,8 +1,8 @@
 (ns app.theme
-  (:require ["@smooth-ui/core-sc" :refer [theme]]))
+  (:require ["@material-ui/core/styles" :refer [createMuiTheme]]))
 
-(def calincome-theme (merge
-                       (js->clj theme :keywordize-keys true)
-                       {:primary "#312e99"}))
+(def calincome-theme
+                       (js->clj createMuiTheme :keywordize-keys true)
+)
 
 

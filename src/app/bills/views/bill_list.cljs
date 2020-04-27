@@ -1,5 +1,5 @@
 (ns app.bills.views.bill-list
-  (:require ["@smooth-ui/core-sc" :refer [Box]]))
+  (:require ["@material-ui/core" :refer [Box]]))
 
 (defn expense-list
   [{expenses :expenses}]

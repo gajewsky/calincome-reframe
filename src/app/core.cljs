@@ -21,10 +21,12 @@
             [app.bills.subs]
             ;; -- nav ---
             [app.nav.views.nav :refer [nav]]
+            [app.header.views.header :refer [header]]
             [app.nav.events]
             [app.nav.subs]
-            [app.theme :refer [calincome-theme]]
-            ["@smooth-ui/core-sc" :refer [Normalize ThemeProvider Grid Row Col]]))
+            ["@material-ui/core" :refer [Container Grid Box]]
+
+            ))
 
 (defn pages
   [page-name]
@@ -45,11 +47,11 @@
   []
   (let [active-nav @(rf/subscribe [:active-nav])]
     [:<>
-     [:> Normalize]
-     [:> ThemeProvider {:theme calincome-theme}
-      [:> Grid {:fluid false}
-       [:> Row
-        [:> Col
+     [:> Container
+      [header]
+      [:> Grid
+       [:> Box
+        [:> Box
          [nav]
          [pages active-nav]]]]]]))
 
