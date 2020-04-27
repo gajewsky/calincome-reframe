@@ -2,23 +2,27 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.components.form-group :refer [form-group]]
-            ["@smooth-ui/core-sc" :refer [Row Col Box Button]]))
+            ["rebass" :refer [Flex Box Button]]))
 
 (defn log-in
   []
   (let [initial-values {:email "" :password ""}
         values (r/atom initial-values)]
     (fn []
-      [:> Row {:justify-content "center"}
-       [:> Col {:sm 12 :md 6}
-        [form-group {:id :email
-                     :label "Email"
-                     :type "email"
-                     :values values}]
-        [form-group {:id :password
-                     :label "Password"
-                     :type "password"
-                     :values values}]
+      [:> Box {:as "form" :py 3 }
+
+       [:> Flex
+        {:mx (- 2) :mb 3}
+        [:> Box {:width (/ 1 2) :px 2}
+         [form-group {:id :email
+                      :label "Email"
+                      :type "email"
+                      :values values}]
+         [form-group {:id :password
+                      :label "Password"
+                      :type "password"
+                      :values values}]]
+
         [:> Box {:display "flex"
                  :justify-content "space-between"}
          [:> Box {:py 1

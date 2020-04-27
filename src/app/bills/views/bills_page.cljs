@@ -1,7 +1,7 @@
 (ns app.bills.views.bills-page
   (:require [re-frame.core :as rf]
             [app.bills.views.bill-list :refer [bill-list]]
-            ["@smooth-ui/core-sc" :refer [Typography]]))
+            ["rebass" :refer [Heading]]))
 
 (defn bills-page
   []
@@ -11,7 +11,7 @@
     [:<>
      (when logged-in?
        [:<>
-        [:> Typography {:variant "h4"
+        [:> Heading {:variant "h4"
                         :py 20
                         :font-weight 700}
          "bills"]

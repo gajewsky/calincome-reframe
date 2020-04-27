@@ -1,10 +1,10 @@
 (ns app.nav.views.nav-item
-  (:require ["@smooth-ui/core-sc" :refer [Box]]))
+  (:require ["rebass" :refer [Link]]))
 
 (defn nav-item
   [{:keys [id href name dispatch active-nav]}]
-  [:> Box {:key id
-           :as "a"
+  [:> Link {:key id
+           :variant "nav"
            :href href
            :on-click dispatch
            :ml 2

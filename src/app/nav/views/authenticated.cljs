@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]
             [app.router :as router]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["@smooth-ui/core-sc" :refer [Box Button]]))
+            ["rebass" :refer [Box]]))
 
 (defn authenticated
   []
@@ -26,11 +26,7 @@
                    {:id :vendors
                     :name "Vendors"
                     :href (router/path-for :vendors)
-                    :dispatch #(rf/dispatch [:set-active-nav :vendors])}
-                   {:id :profile
-                    :name "Profile"
-                    :href (router/path-for :profile)
-                    :dispatch #(rf/dispatch [:set-active-nav :profile])}]]
+                    :dispatch #(rf/dispatch [:set-active-nav :vendors])}]]
     [:> Box {:display "flex"
              :justify-content "flex-end"
              :py 1}
@@ -41,6 +37,4 @@
                   :name name
                   :href href
                   :dispatch dispatch
-                  :active-page active-page}])
-     [:> Button { :on-click #(rf/dispatch [:log-out])} "Logout"]]))
-
+                  :active-page active-page}])]))
