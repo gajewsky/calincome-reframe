@@ -4,7 +4,8 @@
 (def initial-app-db {:auth {:uid nil}
                      :errors {}
                      :nav {:active-page :dashboard
-                           :active-nav :dashboard }
+                           :active-nav :dashboard
+                           :active-bill nil}
                      :bills {:bill-01 {:id :bill-01
                                        :divide? false
                                        :contractor-id 1

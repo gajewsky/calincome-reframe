@@ -1,23 +1,10 @@
 (ns app.bills.views.bill-list
-  (:require ["rebass" :refer [Box]]))
-
-(defn expense-list
-  [{expenses :expenses}]
-
-  [:> Box {:class "cards"}
-   (for [expense (vals expenses)]
-     (:description expense)
-
-     )])
+  (:require [app.bills.views.bill-card :refer [bill-card]]))
 
 (defn bill-list
   [bills]
-  [:> Box {:class "cards"}
+  [:div {:class "cards"}
    (for [bill bills]
-     (let [{:keys [date]} bill]
-       [:<>
+     ^{:key (:id bill)}
+     [bill-card bill])])
 
-        ^{:key (:id bill)}
-        date
-
-        [expense-list bill]]))])

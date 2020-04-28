@@ -5,3 +5,9 @@
  :bills
  (fn [db _]
    (vals (get-in db [:bills]))))
+
+(reg-sub
+ :bill
+ (fn [db _]
+   (let [active-bill (get-in db [:nav :active-bill])]
+     (get-in db [:bills active-bill]))))

@@ -22,9 +22,8 @@
   []
   (pushy/start! history))
 
-(defn path-for
-  [route]
-  (bidi/path-for routes route))
+(def path-for
+  (partial bidi/path-for routes))
 
 (defn set-token!
   [token]
