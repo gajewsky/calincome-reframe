@@ -20,6 +20,7 @@
             [app.bills.views.bills-page :refer [bills-page]]
             [app.bills.views.bill-page :refer [bill-page]]
             [app.bills.subs]
+            [app.bills.events]
             ;; -- nav ---
             [app.nav.views.nav :refer [nav]]
             [app.header.views.header :refer [header]]

@@ -19,5 +19,5 @@
      [:div date]
      [:div created-at]
      [:div "Expenses:"
-      [bill-expenses expenses]]]))
+      [bill-expenses]]]))
 
