@@ -5,5 +5,6 @@
   [bills]
   [:div {:class "cards"}
    (for [bill bills]
+     ^{:key (:id bill)}
      [bill-card bill])])
 

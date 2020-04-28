@@ -6,7 +6,6 @@
  (fn [db _]
    (vals (get-in db [:bills]))))
 
-
 (reg-sub
  :bill
  (fn [db _]
