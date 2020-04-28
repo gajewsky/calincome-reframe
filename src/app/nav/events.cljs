@@ -8,9 +8,11 @@
    (router/set-token! path)))
 
 (reg-event-db
- :route-changed
- (fn [db [_ {:keys [handler]}]]
-   (assoc-in db [:nav :active-page] handler)))
+  :route-changed
+  (fn [db [_ {:keys [handler route-params]}]]
+    (-> db
+        (assoc-in [:nav :active-page] handler)
+        (assoc-in [:nav :active-bill] (keyword (:bill-id route-params))))))
 
 (reg-event-db
  :set-active-nav

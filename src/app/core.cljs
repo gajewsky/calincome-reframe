@@ -18,6 +18,7 @@
             [app.warranties.views.warranties :refer [warranties]]
             ;; -- bills --
             [app.bills.views.bills-page :refer [bills-page]]
+            [app.bills.views.bill-page :refer [bill-page]]
             [app.bills.subs]
             ;; -- nav ---
             [app.nav.views.nav :refer [nav]]
@@ -37,6 +38,7 @@
     :dashboard [dashboard]
     :incomes [incomes]
     :bills [bills-page]
+    :bill [bill-page]
     :savings [savings]
     :categories [categories]
     :vendors [vendors]
@@ -46,7 +48,7 @@
 
 (defn app
   []
-  (let [active-nav @(rf/subscribe [:active-nav])]
+  (let [active-page @(rf/subscribe [:active-page])]
     [:<>
      [:> ThemeProvider {:theme calincome-theme}
       [header]
@@ -55,7 +57,7 @@
        [:> Box
         [:> Box
          [nav]
-         [pages active-nav]]]]]]))
+         [pages active-page]]]]]]))
 
 
 (defn ^:dev/after-load start
