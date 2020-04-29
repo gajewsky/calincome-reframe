@@ -6,38 +6,41 @@
 (defn bill-expenses
   []
   (fn []
-    (let [expenses @(rf/subscribe [:expenses])]
-      [:div {:class "cards"}
-       (for [{:keys [id] :as initial-values} expenses]
-         (let [values (r/atom initial-values)
-               save (fn [{:keys [id description value subcategory-id track?]}]
-                      (rf/dispatch [:upsert-expense {:id (or id (keyword (str "exp-" (random-uuid))))
-                                                     :description description
-                                                     :value (js/parseInt value)
-                                                     :subcategory-id subcategory-id
-                                                     :track? (boolean track?)}])
-                      (reset! values initial-values))]
+    (let [expenses @(rf/subscribe [:expenses])
+          initial-values {:id nil :description "" :value "" :subcategory-id "" :track? ""}
+          values (r/atom initial-values)
+          save (fn [{:keys [id description value subcategory-id track?]}]
+                 (rf/dispatch [:upsert-expense {:id (or id (keyword (str "exp-" (random-uuid))))
+                                                :description description
+                                                :value (js/parseInt value)
+                                                :subcategory-id subcategory-id
+                                                :track? (boolean track?)}])
+                 (reset! values initial-values))]
 
+      [:div {:class "cards"}
+       [:button {:on-click #(save @values)} "Add"]
+       (for [{:keys [id] :as expense} expenses]
+         (let [expense-values (r/atom expense)]
            ^{:key id}
 
            [:<>
             [form-group {:id :description
                          :label "Description"
                          :type "text"
-                         :values values}]
+                         :values expense-values}]
             [form-group {:id :value
                          :label "Value"
                          :type "number"
-                         :values values}]
+                         :values expense-values}]
             [form-group {:id :subcategory-id
                          :label "Category"
                          :type "text"
-                         :values values}]
+                         :values expense-values}]
             [form-group {:id :track?
                          :label "Track?"
                          :type "text"
-                         :values values}]
-            [:button {:on-click #(save @values)} "Save"]
+                         :values expense-values}]
+            [:button {:on-click #(save @expense-values)} "Save"]
             [:button {:on-click #(when (js/confirm "Are you sure?")
                                    (rf/dispatch [:delete-expense id]))}
              "Delete"]]))])))
