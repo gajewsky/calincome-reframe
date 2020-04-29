@@ -4,11 +4,15 @@
             [re-frame.core :as rf]))
 
 (def routes ["/" {""              :dashboard
-                  "dashboard"     {"" :dashboard [:recipe-id] :recipe}
-                  "incomes/"      {"" :incomes [:income-id] :income}
-                  "bills/"        {"" :bills [:bill-id] :bill}
-                  "categories/"   {"" :categories [:category-id] :category}
-                  "vendors/"      {"" :vendors [:vendor-id] :vendor}
+                  "dashboard"     {"" :dashboard}
+                  "incomes/"      {"" :incomes
+                                   [:income-id] :income}
+                  "bills/"        {"" :bills
+                                   [:bill-id] :bill}
+                  "categories/"   {"" :categories
+                                   [:category-id] :category}
+                  "vendors/"      {"" :vendors
+                                   [:vendor-id] :vendor}
                   "profile"       :profile
                   "sign-up"       :sign-up
                   "log-in"        :log-in}])
