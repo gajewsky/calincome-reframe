@@ -4,7 +4,7 @@
             [app.components.form-group :refer [form-group]]
             [app.bills.views.bill-expenses :refer [bill-expenses]]))
 
-(defn bill-page
+(defn bill-editor
   []
   (let [bill @(rf/subscribe [:bill])
         values (r/atom bill)
