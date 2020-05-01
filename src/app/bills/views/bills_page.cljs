@@ -6,13 +6,17 @@
 (defn bills-page
   []
   (let [bills @(rf/subscribe [:bills])
-        logged-in? @(rf/subscribe [:logged-in?])]
+        logged-in? @(rf/subscribe [:logged-in?])
+        current-user-id (:uid @(rf/subscribe [:current-user]))
+        save #((rf/dispatch [:create-bill %]))]
 
     [:<>
      (when logged-in?
        [:<>
+
+        [:button {:on-click #(save current-user-id)} "Add new"]
         [:> Heading {:variant "h4"
-                        :py 20
-                        :font-weight 700}
+                     :py 20
+                     :font-weight 700}
          "bills"]
         [bill-list bills]])]))

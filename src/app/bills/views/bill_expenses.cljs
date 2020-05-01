@@ -7,7 +7,7 @@
   []
   (fn []
     (let [expenses @(rf/subscribe [:expenses])
-          initial-values {:id nil :description "" :value "" :subcategory-id "" :track? ""}
+          initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? ""}
           values (r/atom initial-values)
           save (fn [{:keys [id description value subcategory-id track?]}]
                  (rf/dispatch [:upsert-expense {:id (or id (keyword (str "exp-" (random-uuid))))

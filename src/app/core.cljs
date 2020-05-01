@@ -18,7 +18,7 @@
             [app.warranties.views.warranties :refer [warranties]]
             ;; -- bills --
             [app.bills.views.bills-page :refer [bills-page]]
-            [app.bills.views.bill-page :refer [bill-page]]
+            [app.bills.views.bill-editor :refer [bill-editor]]
             [app.bills.subs]
             [app.bills.events]
             ;; -- nav ---
@@ -39,7 +39,7 @@
     :dashboard [dashboard]
     :incomes [incomes]
     :bills [bills-page]
-    :bill [bill-page]
+    :bill [bill-editor]
     :savings [savings]
     :categories [categories]
     :vendors [vendors]
