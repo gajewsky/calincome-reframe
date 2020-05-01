@@ -44,6 +44,5 @@
                                                              :value 0
                                                              :subcategory-id ""
                                                              :track? false} }})
-       :dispatch [:set-active-nav :log-in]
        :navigate-to {:path bill-path}})))
 

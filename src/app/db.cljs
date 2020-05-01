@@ -5,11 +5,12 @@
                      :errors {}
                      :nav {:active-page :dashboard
                            :active-nav :dashboard
-                           :active-bill nil}
+                           :active-bill nil
+                           :active-income nil}
                      :bills {:bill-01 {:id :bill-01
                                        :divide? false
                                        :contractor-id 1
-                                       :user-id 1
+                                       :user-id "admin@example.com"
                                        :date "2020-01-03"
                                        :created-at "2020-01-01"
                                        :expenses {:exp-01 {:id :exp-01
@@ -25,7 +26,7 @@
                              :bill-02 {:id :bill-02
                                        :divide? false
                                        :contractor-id 2
-                                       :user-id 1
+                                       :user-id "admin@example.com"
                                        :date "2020-01-04"
                                        :created-at "2020-01-01"
                                        :expenses { :exp-03 {:id :exp-02
@@ -33,7 +34,12 @@
                                                            :value 1222
                                                            :subcategory-id 1
                                                            :track? false }}}}
-
+                     :incomes {:inc-01 { :id :inc-01
+                                        :user-id "admin@example.com"
+                                        :date "2020-01-01"
+                                        :value 324
+                                        :created-at "2020-01-01"
+                                        :inc-category "Wypłata"}}
                      :users {"admin@example.com" {:uid "admin@example.com"
                                                   :profile {:first-name "Admin"
                                                             :last-name "Admin"
