@@ -1,8 +1,6 @@
 (ns app.theme
-  (:require ["@rebass/preset" :refer [preset]]))
+  (:require [reagent-material-ui.colors :as colors]))
 
-(def calincome-theme (merge
-                       (js->clj preset :keywordize-keys true)
-                       {}))
-
-
+(def calincome-theme
+  {:palette {:primary   colors/indigo
+             :secondary colors/teal}})

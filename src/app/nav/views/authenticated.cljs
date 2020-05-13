@@ -2,7 +2,8 @@
   (:require [re-frame.core :as rf]
             [app.router :as router]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["rebass" :refer [Box]]))
+            [reagent-material-ui.core.tabs :refer [tabs]]
+            [reagent-material-ui.core.box :refer [box]]))
 
 (defn authenticated
   []
@@ -27,14 +28,17 @@
                     :name "Vendors"
                     :href (router/path-for :vendors)
                     :dispatch #(rf/dispatch [:set-active-nav :vendors])}]]
-    [:> Box {:display "flex"
-             :justify-content "flex-end"
-             :py 1}
-
-     (for [{:keys [id name href dispatch]} nav-items]
-       [nav-item {:key id
-                  :id id
-                  :name name
-                  :href href
-                  :dispatch dispatch
-                  :active-page active-page}])]))
+    [box {:display "flex"
+          :justify-content "flex-end"
+          :py 1}
+     [tabs
+      {:indicator-color "primary"
+       :text-color "primary"
+       :value false}
+      (for [{:keys [id name href dispatch]} nav-items]
+        [nav-item {:key id
+                   :id id
+                   :name name
+                   :href href
+                   :dispatch dispatch
+                   :active-page active-page}])]]))
