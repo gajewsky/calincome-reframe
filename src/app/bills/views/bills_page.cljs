@@ -1,7 +1,8 @@
 (ns app.bills.views.bills-page
   (:require [re-frame.core :as rf]
             [app.bills.views.bill-list :refer [bill-list]]
-            ["rebass" :refer [Heading]]))
+            [reagent-material-ui.core.typography :refer [typography]]
+            [reagent-material-ui.core.button :refer [button]]))
 
 (defn bills-page
   []
@@ -13,10 +14,8 @@
     [:<>
      (when logged-in?
        [:<>
-
-        [:button {:on-click #(save current-user-id)} "Add new"]
-        [:> Heading {:variant "h4"
-                     :py 20
-                     :font-weight 700}
-         "bills"]
+        [button {:on-click #(save current-user-id)
+                 :color "secondary"
+                 :variant "contained"} "Add new"]
+        [typography {:variant "h4"} "Bills"]
         [bill-list bills]])]))

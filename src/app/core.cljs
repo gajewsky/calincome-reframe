@@ -25,15 +25,17 @@
             [app.incomes.views.income-editor :refer [income-editor]]
             [app.incomes.subs]
             [app.incomes.events]
-            ;; -- nav ---
+            ;; -- nav --
             [app.nav.views.nav :refer [nav]]
             [app.header.views.header :refer [header]]
             [app.nav.events]
             [app.nav.subs]
-            ["@rebass/preset" :refer [preset]]
             [app.theme :refer [calincome-theme]]
-            ["rebass" :refer [Box]]
-            ["emotion-theming" :refer [ThemeProvider]]))
+            ;; -- ui components --
+            [reagent-material-ui.core.drawer :refer [drawer]]
+            [reagent-material-ui.core.container :refer [container]]
+            [reagent-material-ui.styles :as styles]
+            [reagent-material-ui.core.css-baseline :refer [css-baseline]]))
 
 (defn pages
   [page-name]
@@ -56,15 +58,13 @@
   []
   (let [active-page @(rf/subscribe [:active-page])]
     [:<>
-     [:> ThemeProvider {:theme calincome-theme}
+     [css-baseline]
+     [styles/theme-provider (styles/create-mui-theme calincome-theme)
       [header]
-      [:> Box {:align-items "center"
-               :sx {:max-width 1024, :mx "auto", :px 3}}
-       [:> Box
-        [:> Box
-         [nav]
-         [pages active-page]]]]]]))
-
+      [container
+       [nav]
+       [container
+        [pages active-page]]]]]))
 
 (defn ^:dev/after-load start
   []

@@ -1,15 +1,20 @@
 (ns app.components.form-group
   (:require
-    ["rebass" :refer [Box]]
-    ["@rebass/forms" :refer [Label Input]]))
+    [reagent-material-ui.core.box :refer [box]]
+    [reagent-material-ui.core.text-field :refer [text-field]]))
 
 (defn form-group
   [{:keys [id label type values]}]
-  [:> Box
-   {:width (/ 1 2) :px 2}
-   [:> Label {:html-for id} label]
-   [:> Input {:name id
-              :control true
-              :type type
-              :value (id @values)
-              :on-change #(swap! values assoc id (.. % -target -value))}]])
+  (let[input-style {:margin "10px 0px"}]
+    [text-field {:name id
+                 :full-width "true"
+                 :id id
+                 :label label
+                 :margin "normal"
+                 :required "true"
+                 :control true
+                 :type type
+                 :style input-style
+                 :variant "outlined"
+                 :value (id @values)
+                 :on-change #(swap! values assoc id (.. % -target -value))}]))

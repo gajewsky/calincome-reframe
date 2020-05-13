@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]
             [app.router :as router]
             [app.nav.views.nav-item :refer [nav-item]]
-            ["rebass" :refer [Box]]))
+            [reagent-material-ui.core.box :refer [box]]))
 
 (defn public
   []
@@ -15,9 +15,7 @@
                     :name "Log-in"
                     :href (router/path-for :log-in)
                     :dispatch #(rf/dispatch [:set-active-nav :log-in])}]]
-    [:> Box {:display "flex"
-             :justify-content "flex-end"
-             :py 1}
+    [box {:display "flex"}
      (for [{:keys [id name href dispatch]} nav-items]
        [nav-item {:key id
                   :id id

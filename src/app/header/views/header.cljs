@@ -1,12 +1,18 @@
 (ns app.header.views.header
   (:require
     [app.header.views.nav :refer [nav]]
-    ["rebass" :refer [Flex Text Box]]))
+    [app.utils :refer [make-styles]]
+    [reagent-material-ui.core.app-bar :refer [app-bar]]
+    [reagent-material-ui.core.toolbar :refer [toolbar]]
+    [reagent-material-ui.core.typography :refer [typography]]))
 
 (defn header
   []
-  [:> Flex
-   {:px 2 :align-items "center"}
-   [:> Text {:p 2, :font-weight "bold"} "Calincome"]
-   [:> Box {:mx "auto"}]
-   [nav]])
+  [app-bar {:position "static" }
+   [toolbar
+    [typography
+     {:variant "h6"
+      :display "block"
+      :style {:flexGrow 1}}
+     "Calincome"]
+    [nav]]])

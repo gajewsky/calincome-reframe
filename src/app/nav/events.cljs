@@ -10,7 +10,6 @@
 (reg-event-db
   :route-changed
   (fn [db [_ {:keys [handler route-params]}]]
-    (.log js/console route-params)
     (-> db
         (assoc-in [:nav :active-page] handler)
         (assoc-in [:nav :active-income] (keyword (:income-id route-params)))
