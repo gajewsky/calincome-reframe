@@ -27,7 +27,6 @@
                                               :inc-category ""
                                               :value 0
                                               :date time-now
-                                              :created-at time-now
-                                              })
+                                              :created-at time-now})
        :navigate-to {:path income-path}})))
 

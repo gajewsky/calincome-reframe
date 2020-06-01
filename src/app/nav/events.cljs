@@ -13,6 +13,7 @@
     (-> db
         (assoc-in [:nav :active-page] handler)
         (assoc-in [:nav :active-income] (keyword (:income-id route-params)))
+        (assoc-in [:nav :active-vendor] (keyword (:vendor-id route-params)))
         (assoc-in [:nav :active-bill] (keyword (:bill-id route-params))))))
 
 (reg-event-db

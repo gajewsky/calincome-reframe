@@ -13,7 +13,6 @@
             [app.dashboard.views.dashboard :refer [dashboard]]
             [app.savings.views.savings :refer [savings]]
             [app.categories.views.categories :refer [categories]]
-            [app.vendors.views.vendors :refer [vendors]]
             [app.warranties.views.warranties :refer [warranties]]
             ;; -- bills --
             [app.bills.views.bills-page :refer [bills-page]]
@@ -25,6 +24,11 @@
             [app.incomes.views.income-editor :refer [income-editor]]
             [app.incomes.subs]
             [app.incomes.events]
+            ;; -- vendors --
+            [app.vendors.views.vendors-page :refer [vendors-page]]
+            [app.vendors.views.vendor-editor :refer [vendor-editor]]
+            [app.vendors.subs]
+            [app.vendors.events]
             ;; -- nav --
             [app.nav.views.nav :refer [nav]]
             [app.header.views.header :refer [header]]
@@ -49,7 +53,8 @@
     :bill [bill-editor]
     :savings [savings]
     :categories [categories]
-    :vendors [vendors]
+    :vendors [vendors-page]
+    :vendor [vendor-editor]
     :warranties [warranties]
     :profile [profile]
     [dashboard]))
