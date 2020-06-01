@@ -7,12 +7,11 @@
   [{:keys [id label type values]}]
   (let[input-style {:margin "10px 0px"}]
     [text-field {:name id
-                 :full-width "true"
+                 :full-width true
                  :id id
                  :label label
                  :margin "normal"
-                 :required "true"
-                 :control true
+                 :required true
                  :type type
                  :style input-style
                  :variant "outlined"

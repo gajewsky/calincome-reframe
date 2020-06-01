@@ -8,7 +8,6 @@
   [{:keys [id href name dispatch active-page]}]
   [tab {:key id
         :value id
-        :show-label true
         :label name
         :on-click dispatch
         :href href

@@ -6,7 +6,9 @@
                      :nav {:active-page :dashboard
                            :active-nav :dashboard
                            :active-bill nil
-                           :active-income nil}
+                           :active-income nil
+                           :active-vendor nil}
+
                      :bills {:bill-01 {:id :bill-01
                                        :divide? false
                                        :contractor-id 1
@@ -34,12 +36,20 @@
                                                            :value 1222
                                                            :subcategory-id 1
                                                            :track? false }}}}
+
                      :incomes {:inc-01 { :id :inc-01
                                         :user-id "admin@example.com"
                                         :date "2020-01-01"
                                         :value 324
                                         :created-at "2020-01-01"
                                         :inc-category "Wypłata"}}
+
+                     :vendors {:ven-01 { :id :ven-01
+                                        :name "Biedronka"
+                                        :description "description"
+                                        :category "Food"
+                                        :revolut-id "Biedronka"}}
+
                      :users {"admin@example.com" {:uid "admin@example.com"
                                                   :profile {:first-name "Admin"
                                                             :last-name "Admin"
