@@ -6,15 +6,18 @@
   (fn [db [_ income-id]]
     (update-in db [:incomes] dissoc income-id)))
 
-(reg-event-db
+(reg-event-fx
   :update-income
-  (fn [db [_ {:keys [id user-id inc-category date value]}]]
-    (let [income-id (get-in db [:nav :active-income])]
-      (update-in db [:incomes income-id] merge {:id id
+  (fn [{:keys [db]} [_ {:keys [id user-id inc-category date value]}]]
+    (let [income-id (get-in db [:nav :active-income])
+          incomes-path "/incomes/"]
+
+      {:db (update-in db [:incomes income-id] merge {:id id
                                      :user-id user-id
                                      :inc-category inc-category
                                      :value value
-                                     :date date }))))
+                                     :date date })
+       :navigate-to {:path incomes-path}})))
 
 (reg-event-fx
   :create-income

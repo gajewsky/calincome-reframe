@@ -9,14 +9,15 @@
 (reg-event-fx
   :update-vendor
   (fn [{:keys [db]} [_ {:keys [id name description category revolut-id]}]]
-    (let [vendor-id (get-in db [:nav :active-vendor])]
+    (let [vendor-id (get-in db [:nav :active-vendor])
+          vendors-path "/vendors/"]
 
       {:db (update-in db [:vendors vendor-id] merge {:id id
                                      :name name
                                      :description description
                                      :category category
                                      :revolut-id revolut-id})
-       :navigate-to {:path "/vendors/"}})))
+       :navigate-to {:path vendors-path}})))
 
 (reg-event-fx
   :create-vendor
