@@ -8,6 +8,11 @@
       (update-in db [:bills bill-id :expenses] dissoc expense-id))))
 
 (reg-event-db
+  :delete-bill
+  (fn [db [_ bill-id]]
+    (update-in db [:bills] dissoc bill-id)))
+
+(reg-event-db
   :upsert-expense
   (fn [db [_ {:keys [id description value subcategory-id track?]}]]
     (let [bill-id (get-in db [:nav :active-bill])]
@@ -16,15 +21,18 @@
                                                   :value value
                                                   :subcategory-id subcategory-id
                                                   :track? track?}))))
-(reg-event-db
+(reg-event-fx
   :update-bill
-  (fn [db [_ {:keys [id divide? contractor-id user-id date]}]]
-    (let [bill-id (get-in db [:nav :active-bill])]
-      (update-in db [:bills bill-id] merge {:id id
+  (fn [{:keys [db]} [_ {:keys [id divide? contractor-id user-id date]}]]
+    (let [bill-id (get-in db [:nav :active-bill])
+          bills-path "/bills/"]
+
+      {:db (update-in db [:bills bill-id] merge {:id id
                                      :divide? divide?
                                      :contractor-id contractor-id
                                      :user-id user-id
-                                     :date date }))))
+                                     :date date })
+       :navigate-to {:path bills-path}})))
 
 (reg-event-fx
   :create-bill
@@ -43,6 +51,6 @@
                                                              :description ""
                                                              :value 0
                                                              :subcategory-id ""
-                                                             :track? false} }})
+                                                             :track? false}}})
        :navigate-to {:path bill-path}})))
 
