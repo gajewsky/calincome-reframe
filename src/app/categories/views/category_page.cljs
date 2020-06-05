@@ -1,14 +1,14 @@
-(ns app.vendors.views.vendors-page
+(ns app.categories.views.category-page
   (:require [re-frame.core :as rf]
-            [app.vendors.views.vendor-list :refer [vendor-list]]
+            [app.categories.views.category-list :refer [category-list]]
             [reagent-material-ui.core.typography :refer [typography]]
             [reagent-material-ui.core.button :refer [button]]))
 
-(defn vendors-page
+(defn category-page
   []
-  (let [vendors @(rf/subscribe [:vendors])
+  (let [categories @(rf/subscribe [:categories])
         logged-in? @(rf/subscribe [:logged-in?])
-        save #((rf/dispatch [:create-vendor]))]
+        save #(rf/dispatch [:create-category])]
 
     [:<>
      (when logged-in?
@@ -16,6 +16,6 @@
         [button {:on-click #(save)
                  :color "secondary"
                  :variant "contained"} "Add new"]
-        [typography {:variant "h4"} "vendors"]
-        [vendor-list vendors]])]))
+        [typography {:variant "h4"} "categories"]
+        [category-list categories]])]))
 
