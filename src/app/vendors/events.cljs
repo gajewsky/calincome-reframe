@@ -2,34 +2,42 @@
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [nano-id.core :refer [nano-id]]))
 
-(reg-event-db
+(def vendors-path "/vendors/")
+
+(defn vendor-path
+  [id]
+  (str vendors-path (name id)))
+
+(reg-event-fx
   :delete-vendor
-  (fn [db [_ vendor-id]]
-    (update-in db [:vendors] dissoc vendor-id)))
+  (fn [{:keys [db]} [_ id]]
+    {:db (update-in db [:vendors] dissoc id)
+     :persist-delete {:path (vendor-path id)}}))
 
 (reg-event-fx
   :update-vendor
-  (fn [{:keys [db]} [_ {:keys [id name description category revolut-id]}]]
-    (let [vendor-id (get-in db [:nav :active-vendor])
-          vendors-path "/vendors/"]
+  (fn [{:keys [db]} [_ {:keys [name description category revolut-id]}]]
+    (let [id (get-in db [:nav :active-vendor])
+          attrs {:id id
+                 :name name
+                 :description description
+                 :category category
+                 :revolut-id revolut-id}]
 
-      {:db (update-in db [:vendors vendor-id] merge {:id id
-                                     :name name
-                                     :description description
-                                     :category category
-                                     :revolut-id revolut-id})
+      {:db (update-in db [:vendors id] merge attrs)
+       :persist {:path (vendor-path id) :attrs attrs}
        :navigate-to {:path vendors-path}})))
 
 (reg-event-fx
   :create-vendor
   (fn [{:keys [db]} [_]]
-    (let [vendor-id (keyword (nano-id 10))
-          vendor-path (str "/vendors/" (name vendor-id))]
+    (let [id (keyword (nano-id 10))
+          init-attrs {:id id
+                      :name ""
+                      :description ""
+                      :category ""
+                      :revolut-id ""}]
 
-      {:db (assoc-in db [:vendors vendor-id] {:id vendor-id
-                                              :name ""
-                                              :description ""
-                                              :category ""
-                                              :revolut-id ""})
-       :navigate-to {:path vendor-path}})))
+      {:db (assoc-in db [:vendors id] init-attrs)
+       :navigate-to {:path (vendor-path id)}})))
 

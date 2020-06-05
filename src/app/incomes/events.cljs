@@ -26,21 +26,21 @@
                  :date date }]
 
       {:db (update-in db [:incomes id] merge attrs)
-       :navigate-to {:path incomes-path}
-       :persist {:path (income-path id) :attrs attrs}})))
+       :persist {:path (income-path id) :attrs attrs}
+       :navigate-to {:path incomes-path}})))
 
 (reg-event-fx
   :create-income
   (fn [{:keys [db]} [_ user-id]]
     (let [id (keyword (nano-id 10))
           time-now (.now js/Date)
-          attrs {:id id
+          init-attrs {:id id
                  :user-id user-id
                  :inc-category ""
                  :value 0
                  :date time-now
                  :created-at time-now}]
-      {:db (assoc-in db [:incomes id] attrs)
+      {:db (assoc-in db [:incomes id] init-attrs)
        :navigate-to {:path (income-path id)}})))
 
 (reg-event-fx
