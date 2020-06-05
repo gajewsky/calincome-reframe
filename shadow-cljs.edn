@@ -9,7 +9,8 @@
                 [bidi "2.1.6"]
                 [kibu/pushy "0.3.8"]
                 [com.andrewmcveigh/cljs-time "0.5.2"]
-                [arttuka/reagent-material-ui "4.9.12-0"]]
+                [arttuka/reagent-material-ui "4.9.12-0"]
+                [nano-id "1.0.0"]]
 
  :nrepl        {:port 3333}
 

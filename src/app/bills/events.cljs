@@ -1,5 +1,6 @@
 (ns app.bills.events
-  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]))
+  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
+            [nano-id.core :refer [nano-id]]))
 
 (reg-event-db
   :delete-expense
@@ -37,8 +38,8 @@
 (reg-event-fx
   :create-bill
   (fn [{:keys [db]} [_ user-id]]
-    (let [bill-id (keyword (str "bill-" (random-uuid)))
-          exp-id (keyword (str "exp-" (random-uuid)))
+    (let [bill-id (keyword (nano-id 10))
+          exp-id (keyword (nano-id 10))
           time-now (.now js/Date)
           bill-path (str "/bills/" (name bill-id))]
       {:db (assoc-in db [:bills bill-id] {:id bill-id

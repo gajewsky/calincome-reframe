@@ -1,5 +1,6 @@
 (ns app.vendors.events
-  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]))
+  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
+            [nano-id.core :refer [nano-id]]))
 
 (reg-event-db
   :delete-vendor
@@ -22,7 +23,7 @@
 (reg-event-fx
   :create-vendor
   (fn [{:keys [db]} [_]]
-    (let [vendor-id (keyword (str "ven-" (random-uuid)))
+    (let [vendor-id (keyword (nano-id 10))
           vendor-path (str "/vendors/" (name vendor-id))]
 
       {:db (assoc-in db [:vendors vendor-id] {:id vendor-id

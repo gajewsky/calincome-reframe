@@ -1,7 +1,8 @@
 (ns app.bills.views.bill-expenses
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
-            [app.components.form-group :refer [form-group]]))
+            [app.components.form-group :refer [form-group]]
+            [nano-id.core :refer [nano-id]]))
 
 (defn bill-expenses
   []
@@ -10,7 +11,7 @@
           initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? ""}
           values (r/atom initial-values)
           save (fn [{:keys [id description value subcategory-id track?]}]
-                 (rf/dispatch [:upsert-expense {:id (or id (keyword (str "exp-" (random-uuid))))
+                 (rf/dispatch [:upsert-expense {:id (or id (keyword (nano-id 10)))
                                                 :description description
                                                 :value (js/parseInt value)
                                                 :subcategory-id subcategory-id

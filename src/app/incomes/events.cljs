@@ -1,6 +1,7 @@
 (ns app.incomes.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [clojure.walk :refer [keywordize-keys]]))
+            [clojure.walk :refer [keywordize-keys]]
+            [nano-id.core :refer [nano-id]]))
 
 (reg-event-fx
   :delete-income
@@ -28,7 +29,7 @@
 (reg-event-fx
   :create-income
   (fn [{:keys [db]} [_ user-id]]
-    (let [income-id (keyword (str "inc-" (random-uuid)))
+    (let [income-id (keyword (nano-id 10))
           time-now (.now js/Date)
           income-path (str "/incomes/" (name income-id))
           income-attrs {:id income-id
