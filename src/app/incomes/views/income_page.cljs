@@ -1,10 +1,10 @@
-(ns app.incomes.views.incomes-page
+(ns app.incomes.views.income-page
   (:require [re-frame.core :as rf]
             [app.incomes.views.income-list :refer [income-list]]
             [reagent-material-ui.core.typography :refer [typography]]
             [reagent-material-ui.core.button :refer [button]]))
 
-(defn incomes-page
+(defn income-page
   []
   (let [incomes @(rf/subscribe [:incomes])
         logged-in? @(rf/subscribe [:logged-in?])

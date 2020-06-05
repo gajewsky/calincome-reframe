@@ -16,23 +16,27 @@
             ;; -- pages --
             [app.dashboard.views.dashboard :refer [dashboard]]
             [app.savings.views.savings :refer [savings]]
-            [app.categories.views.categories :refer [categories]]
             [app.warranties.views.warranties :refer [warranties]]
             ;; -- bills --
-            [app.bills.views.bills-page :refer [bills-page]]
+            [app.bills.views.bill-page :refer [bill-page]]
             [app.bills.views.bill-editor :refer [bill-editor]]
             [app.bills.subs]
             [app.bills.events]
             ;; -- incomes --
-            [app.incomes.views.incomes-page :refer [incomes-page]]
+            [app.incomes.views.income-page :refer [income-page]]
             [app.incomes.views.income-editor :refer [income-editor]]
             [app.incomes.subs]
             [app.incomes.events]
             ;; -- vendors --
-            [app.vendors.views.vendors-page :refer [vendors-page]]
+            [app.vendors.views.vendor-page :refer [vendor-page]]
             [app.vendors.views.vendor-editor :refer [vendor-editor]]
             [app.vendors.subs]
             [app.vendors.events]
+            ;; -- categories --
+            [app.categories.views.category-page :refer [category-page]]
+            [app.categories.views.category-editor :refer [category-editor]]
+            [app.categories.subs]
+            [app.categories.events]
             ;; -- nav --
             [app.nav.views.nav :refer [nav]]
             [app.header.views.header :refer [header]]
@@ -51,13 +55,14 @@
     :sign-up [sign-up]
     :log-in [log-in]
     :dashboard [dashboard]
-    :incomes [incomes-page]
+    :incomes [income-page]
     :income [income-editor]
-    :bills [bills-page]
+    :bills [bill-page]
     :bill [bill-editor]
     :savings [savings]
-    :categories [categories]
-    :vendors [vendors-page]
+    :categories [category-page]
+    :category [category-editor]
+    :vendors [vendor-page]
     :vendor [vendor-editor]
     :warranties [warranties]
     :profile [profile]
@@ -85,5 +90,4 @@
   (router/start!)
   (rf/dispatch-sync [:initialize-db])
   (start)
-  (firebase-init)
-  (db-save! ["incomes"] "adin"))
+  (firebase-init))

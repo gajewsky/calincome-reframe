@@ -1,10 +1,10 @@
-(ns app.bills.views.bills-page
+(ns app.bills.views.bill-page
   (:require [re-frame.core :as rf]
             [app.bills.views.bill-list :refer [bill-list]]
             [reagent-material-ui.core.typography :refer [typography]]
             [reagent-material-ui.core.button :refer [button]]))
 
-(defn bills-page
+(defn bill-page
   []
   (let [bills @(rf/subscribe [:bills])
         logged-in? @(rf/subscribe [:logged-in?])

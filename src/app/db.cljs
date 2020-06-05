@@ -7,7 +7,8 @@
                            :active-nav :dashboard
                            :active-bill nil
                            :active-income nil
-                           :active-vendor nil}
+                           :active-vendor nil
+                           :active-category nil}
 
                      :bills {:bill-01 {:id :bill-01
                                        :divide? false
@@ -49,6 +50,11 @@
                                         :description "description"
                                         :category "Food"
                                         :revolut-id "Biedronka"}}
+
+                     :categories {:cat-01 { :id :cat-01
+                                        :group "Food"
+                                        :name "Home"
+                                        :description "description"}}
 
                      :users {"admin@example.com" {:uid "admin@example.com"
                                                   :profile {:first-name "Admin"
