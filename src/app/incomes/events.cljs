@@ -2,10 +2,12 @@
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [clojure.walk :refer [keywordize-keys]]))
 
-(reg-event-db
+(reg-event-fx
   :delete-income
-  (fn [db [_ income-id]]
-    (update-in db [:incomes] dissoc income-id)))
+  (fn [{:keys [db]} [_ income-id]]
+    (let [income-path (str "/incomes/" (name income-id))]
+      {:db (update-in db [:incomes] dissoc income-id)
+       :persist-delete {:path income-path}})))
 
 (reg-event-fx
   :update-income
@@ -37,25 +39,11 @@
                         :created-at time-now}]
       {:db (assoc-in db [:incomes income-id] income-attrs)
        :navigate-to {:path income-path}})))
+
 (reg-event-fx
   :fetch-incomes
   (fn [&_]
     {:fetch {:path "/incomes/" :on-success [:fetch-incomes-success]}}))
-
-; (reg-event-db
-;   :fetch-incomes-success
-;   (fn [db [_ col-snap]]
-;     (.log js/console col-snap)
-;     (let [
-;           doc-snaps (.-docs col-snap)
-;           incomes (map #(keywordize-keys (.data %)) doc-snaps)
-;           ]
-;       (.log js/console incomes)
-;       (.log js/console (assoc db :incomes incomes))
-;       db
-;       )
-;     )
-;   )
 
 (defn index-by
   "Transform a coll to a map with a given key as a lookup value"

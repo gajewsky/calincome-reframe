@@ -10,6 +10,13 @@
       (.set doc-ref (clj->js attrs) #js {:merge true}))))
 
 (reg-fx
+  :persist-delete
+  (fn [{:keys [path]}]
+    (let [firestore (.firestore firebase)
+          doc-ref (.doc firestore path)]
+      (.delete doc-ref))))
+
+(reg-fx
   :fetch
   (fn [{:keys [path on-success]}]
     (let [firestore (.firestore firebase)
