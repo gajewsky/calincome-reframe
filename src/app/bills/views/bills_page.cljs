@@ -9,7 +9,7 @@
   (let [bills @(rf/subscribe [:bills])
         logged-in? @(rf/subscribe [:logged-in?])
         current-user-id (:uid @(rf/subscribe [:current-user]))
-        save #((rf/dispatch [:create-bill %]))]
+        save #(rf/dispatch [:create-bill %])]
 
     [:<>
      (when logged-in?

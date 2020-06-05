@@ -8,7 +8,7 @@
   []
   (let [vendors @(rf/subscribe [:vendors])
         logged-in? @(rf/subscribe [:logged-in?])
-        save #((rf/dispatch [:create-vendor]))]
+        save #(rf/dispatch [:create-vendor])]
 
     [:<>
      (when logged-in?
