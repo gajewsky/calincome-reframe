@@ -38,23 +38,11 @@
                                                            :subcategory-id 1
                                                            :track? false }}}}
 
-                     :incomes {:inc-01 { :id :inc-01
-                                        :user-id "admin@example.com"
-                                        :date "2020-01-01"
-                                        :value 324
-                                        :created-at "2020-01-01"
-                                        :inc-category "Wypłata"}}
+                     :incomes {}
 
-                     :vendors {:ven-01 { :id :ven-01
-                                        :name "Biedronka"
-                                        :description "description"
-                                        :category "Food"
-                                        :revolut-id "Biedronka"}}
+                     :vendors {}
 
-                     :categories {:cat-01 { :id :cat-01
-                                        :group "Food"
-                                        :name "Home"
-                                        :description "description"}}
+                     :categories {}
 
                      :users {"admin@example.com" {:uid "admin@example.com"
                                                   :profile {:first-name "Admin"

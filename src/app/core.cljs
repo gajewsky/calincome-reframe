@@ -3,10 +3,9 @@
             [re-frame.core :as rf]
             [app.db]
             [app.router :as router]
-            [app.effects]
             ;; -- firebase --
             [app.fb.init :refer [firebase-init]]
-            [app.fb.db :refer [db-save!]]
+            [app.fb.db]
             ;; -- auth --
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.log-in :refer [log-in]]

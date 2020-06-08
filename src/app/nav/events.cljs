@@ -22,11 +22,19 @@
        :income
        {:db (assoc nav :active-income (keyword (:income-id route-params)))}
 
+       :vendors
+       {:db nav
+        :dispatch [:fetch-vendors]}
+
        :vendor
        {:db (assoc nav :active-vendor (keyword (:vendor-id route-params)))}
 
        :bill
        {:db (assoc nav :active-bill (keyword (:bill-id route-params)))}
+
+       :categories
+       {:db nav
+        :dispatch [:fetch-categories]}
 
        :category
        {:db (assoc nav :active-category (keyword (:category-id route-params)))}

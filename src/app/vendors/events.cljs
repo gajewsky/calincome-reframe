@@ -1,6 +1,7 @@
 (ns app.vendors.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by]]))
 
 (def vendors-path "/vendors/")
 
@@ -41,3 +42,13 @@
       {:db (assoc-in db [:vendors id] init-attrs)
        :navigate-to {:path (vendor-path id)}})))
 
+(reg-event-fx
+  :fetch-vendors
+  (fn [&_]
+    {:fetch {:path vendors-path :on-success [:fetch-vendors-success]}}))
+
+(reg-event-db
+  :fetch-vendors-success
+  (fn [db [_ response]]
+    (let [vendors (index-by :id response)]
+      (assoc db :vendors vendors))))

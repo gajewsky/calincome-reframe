@@ -1,6 +1,7 @@
 (ns app.categories.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by]]))
 
 (def categories-path "/categories/")
 
@@ -39,3 +40,13 @@
       {:db (assoc-in db [:categories id] init-attrs)
        :navigate-to {:path (category-path id)}})))
 
+(reg-event-fx
+  :fetch-categories
+  (fn [&_]
+    {:fetch {:path categories-path :on-success [:fetch-categories-success]}}))
+
+(reg-event-db
+  :fetch-categories-success
+  (fn [db [_ response]]
+    (let [categories (index-by :id response)]
+      (assoc db :categories categories))))

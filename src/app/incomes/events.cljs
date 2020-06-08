@@ -1,7 +1,7 @@
 (ns app.incomes.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [clojure.walk :refer [keywordize-keys]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by]]))
 
 (def incomes-path "/incomes/")
 
@@ -48,22 +48,9 @@
   (fn [&_]
     {:fetch {:path incomes-path :on-success [:fetch-incomes-success]}}))
 
-(defn index-by
-  "Transform a coll to a map with a given key as a lookup value"
-  [key coll]
-  (->> coll
-       (map (juxt key identity))
-       (into {})))
-
 (reg-event-db
   :fetch-incomes-success
-  (fn [db [_ col-snap]]
-    (let [incomes (->> (.-docs col-snap)
-                       (map #(.data %))
-                       (map #(js->clj %))
-                       (map keywordize-keys)
-                       vec
-                       (index-by :id))]
-
+  (fn [db [_ response]]
+    (let [incomes (index-by :id response)]
       (assoc db :incomes incomes))))
 

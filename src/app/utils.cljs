@@ -7,3 +7,10 @@
                   (clj->js (f theme))))]
     (fn [& args]
       (js->clj (apply mk-fn args) :keywordize-keys true))))
+
+(defn index-by
+  "Transform a coll to a map with a given key as a lookup value"
+  [key coll]
+  (->> coll
+       (map (juxt key identity))
+       (into {})))
