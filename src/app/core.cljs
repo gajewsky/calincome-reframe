@@ -15,8 +15,6 @@
             [app.auth.subs]
             ;; -- pages --
             [app.dashboard.views.dashboard :refer [dashboard]]
-            [app.savings.views.savings :refer [savings]]
-            [app.warranties.views.warranties :refer [warranties]]
             ;; -- bills --
             [app.bills.views.bill-page :refer [bill-page]]
             [app.bills.views.bill-editor :refer [bill-editor]]
@@ -59,12 +57,10 @@
     :income [income-editor]
     :bills [bill-page]
     :bill [bill-editor]
-    :savings [savings]
     :categories [category-page]
     :category [category-editor]
     :vendors [vendor-page]
     :vendor [vendor-editor]
-    :warranties [warranties]
     :profile [profile]
     [dashboard]))
 
