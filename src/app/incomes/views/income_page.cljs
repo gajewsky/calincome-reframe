@@ -18,9 +18,7 @@
         [button {:on-click #(save current-user-id)
                  :color "secondary"
                  :variant "contained"} "Add new"]
-        [button {:on-click #(load-incomes)
-                 :color "secondary"
-                 :variant "contained"} "Load records"]
+
         [typography {:variant "h4"} "Incomes"]
         [income-list incomes]])]))
 
