@@ -13,7 +13,7 @@
   :delete-vendor
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:vendors] dissoc id)
-     :persist-delete {:path (vendor-path id)}}))
+     :firestore/delete {:path (vendor-path id)}}))
 
 (reg-event-fx
   :update-vendor
@@ -26,7 +26,7 @@
                  :revolut-id revolut-id}]
 
       {:db (update-in db [:vendors id] merge attrs)
-       :persist {:path (vendor-path id) :attrs attrs}
+       :firestore/save {:path (vendor-path id) :attrs attrs}
        :navigate-to {:path vendors-path}})))
 
 (reg-event-fx
@@ -43,12 +43,13 @@
        :navigate-to {:path (vendor-path id)}})))
 
 (reg-event-fx
-  :fetch-vendors
+  :get-vendors
   (fn [&_]
-    {:fetch {:path vendors-path :on-success [:fetch-vendors-success]}}))
+    {:firestore/get-col {:path vendors-path :on-success [:get-vendors-success]}}))
 
 (reg-event-db
-  :fetch-vendors-success
+  :get-vendors-success
   (fn [db [_ response]]
-    (let [vendors (index-by :id response)]
-      (assoc db :vendors vendors))))
+    (->> response
+         (index-by :id)
+         (assoc db :vendors))))

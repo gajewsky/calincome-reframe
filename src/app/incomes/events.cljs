@@ -13,7 +13,7 @@
   :delete-income
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:incomes] dissoc id)
-     :persist-delete {:path (income-path id)}}))
+     :firestore/delete {:path (income-path id)}}))
 
 (reg-event-fx
   :update-income
@@ -26,7 +26,7 @@
                  :date date }]
 
       {:db (update-in db [:incomes id] merge attrs)
-       :persist {:path (income-path id) :attrs attrs}
+       :firestore/save {:path (income-path id) :attrs attrs}
        :navigate-to {:path incomes-path}})))
 
 (reg-event-fx
@@ -44,13 +44,14 @@
        :navigate-to {:path (income-path id)}})))
 
 (reg-event-fx
-  :fetch-incomes
+  :get-incomes
   (fn [&_]
-    {:fetch {:path incomes-path :on-success [:fetch-incomes-success]}}))
+    {:firestore/get-col {:path incomes-path :on-success [:get-incomes-success]}}))
 
 (reg-event-db
-  :fetch-incomes-success
+  :get-incomes-success
   (fn [db [_ response]]
-    (let [incomes (index-by :id response)]
-      (assoc db :incomes incomes))))
+    (->> response
+         (index-by :id)
+         (assoc db :incomes))))
 

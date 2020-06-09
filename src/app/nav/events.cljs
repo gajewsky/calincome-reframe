@@ -17,27 +17,30 @@
      (case handler
        :incomes
        {:db nav
-        :dispatch [:fetch-incomes]}
+        :dispatch [:get-incomes]}
 
        :income
-       {:db (assoc nav :active-income (keyword (:income-id route-params)))}
+       {:db (assoc nav :active-income (keyword (:income-id route-params)))
+        :dispatch [:get-incomes]}
 
        :vendors
        {:db nav
-        :dispatch [:fetch-vendors]}
+        :dispatch [:get-vendors]}
 
        :vendor
-       {:db (assoc nav :active-vendor (keyword (:vendor-id route-params)))}
+       {:db (assoc nav :active-vendor (keyword (:vendor-id route-params)))
+        :dispatch [:get-vendors]}
 
        :bill
        {:db (assoc nav :active-bill (keyword (:bill-id route-params)))}
 
        :categories
        {:db nav
-        :dispatch [:fetch-categories]}
+        :dispatch [:get-categories]}
 
        :category
-       {:db (assoc nav :active-category (keyword (:category-id route-params)))}
+       {:db (assoc nav :active-category (keyword (:category-id route-params)))
+        :dispatch [:get-categories]}
 
        {:db (dissoc nav
                     :active-income

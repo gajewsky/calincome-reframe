@@ -13,7 +13,7 @@
   :delete-category
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:categories] dissoc id)
-     :persist-delete {:path (category-path id)}}))
+     :firestore/delete {:path (category-path id)}}))
 
 (reg-event-fx
   :update-category
@@ -25,7 +25,7 @@
                  :description description}]
 
       {:db (update-in db [:categories id] merge attrs)
-       :persist {:path (category-path id) :attrs attrs}
+       :firestore/save {:path (category-path id) :attrs attrs}
        :navigate-to {:path categories-path}})))
 
 (reg-event-fx
@@ -41,12 +41,13 @@
        :navigate-to {:path (category-path id)}})))
 
 (reg-event-fx
-  :fetch-categories
+  :get-categories
   (fn [&_]
-    {:fetch {:path categories-path :on-success [:fetch-categories-success]}}))
+    {:firestore/get-col {:path categories-path :on-success [:get-categories-success]}}))
 
 (reg-event-db
-  :fetch-categories-success
+  :get-categories-success
   (fn [db [_ response]]
-    (let [categories (index-by :id response)]
-      (assoc db :categories categories))))
+    (->> response
+         (index-by :id)
+         (assoc db :categories))))

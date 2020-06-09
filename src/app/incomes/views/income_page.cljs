@@ -10,7 +10,7 @@
         logged-in? @(rf/subscribe [:logged-in?])
         current-user-id (:uid @(rf/subscribe [:current-user]))
         save #(rf/dispatch [:create-income %])
-        load-incomes #(rf/dispatch [:fetch-incomes])]
+        load-incomes #(rf/dispatch [:get-incomes])]
 
     [:<>
      (when logged-in?
