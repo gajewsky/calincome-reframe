@@ -1,7 +1,7 @@
 (ns app.incomes.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [nano-id.core :refer [nano-id]]
-            [app.utils :refer [index-by]]))
+            [app.utils :refer [index-by-id]]))
 
 (def incomes-path "/incomes/")
 
@@ -52,6 +52,6 @@
   :get-incomes-success
   (fn [db [_ response]]
     (->> response
-         (index-by :id)
+         index-by-id
          (assoc db :incomes))))
 

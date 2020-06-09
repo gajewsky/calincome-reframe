@@ -1,7 +1,7 @@
 (ns app.categories.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [nano-id.core :refer [nano-id]]
-            [app.utils :refer [index-by]]))
+            [app.utils :refer [index-by-id]]))
 
 (def categories-path "/categories/")
 
@@ -49,5 +49,5 @@
   :get-categories-success
   (fn [db [_ response]]
     (->> response
-         (index-by :id)
+         index-by-id
          (assoc db :categories))))

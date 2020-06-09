@@ -1,7 +1,7 @@
 (ns app.vendors.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [nano-id.core :refer [nano-id]]
-            [app.utils :refer [index-by]]))
+            [app.utils :refer [index-by-id]]))
 
 (def vendors-path "/vendors/")
 
@@ -51,5 +51,5 @@
   :get-vendors-success
   (fn [db [_ response]]
     (->> response
-         (index-by :id)
+         index-by-id
          (assoc db :vendors))))
