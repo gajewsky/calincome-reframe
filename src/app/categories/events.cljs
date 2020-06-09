@@ -1,6 +1,7 @@
 (ns app.categories.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by-id]]))
 
 (def categories-path "/categories/")
 
@@ -12,7 +13,7 @@
   :delete-category
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:categories] dissoc id)
-     :persist-delete {:path (category-path id)}}))
+     :firestore/delete {:path (category-path id)}}))
 
 (reg-event-fx
   :update-category
@@ -24,7 +25,7 @@
                  :description description}]
 
       {:db (update-in db [:categories id] merge attrs)
-       :persist {:path (category-path id) :attrs attrs}
+       :firestore/save {:path (category-path id) :attrs attrs}
        :navigate-to {:path categories-path}})))
 
 (reg-event-fx
@@ -39,3 +40,14 @@
       {:db (assoc-in db [:categories id] init-attrs)
        :navigate-to {:path (category-path id)}})))
 
+(reg-event-fx
+  :get-categories
+  (fn [&_]
+    {:firestore/get-col {:path categories-path :on-success [:get-categories-success]}}))
+
+(reg-event-db
+  :get-categories-success
+  (fn [db [_ response]]
+    (->> response
+         index-by-id
+         (assoc db :categories))))

@@ -1,7 +1,7 @@
 (ns app.incomes.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [clojure.walk :refer [keywordize-keys]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by-id]]))
 
 (def incomes-path "/incomes/")
 
@@ -13,7 +13,7 @@
   :delete-income
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:incomes] dissoc id)
-     :persist-delete {:path (income-path id)}}))
+     :firestore/delete {:path (income-path id)}}))
 
 (reg-event-fx
   :update-income
@@ -26,7 +26,7 @@
                  :date date }]
 
       {:db (update-in db [:incomes id] merge attrs)
-       :persist {:path (income-path id) :attrs attrs}
+       :firestore/save {:path (income-path id) :attrs attrs}
        :navigate-to {:path incomes-path}})))
 
 (reg-event-fx
@@ -44,26 +44,14 @@
        :navigate-to {:path (income-path id)}})))
 
 (reg-event-fx
-  :fetch-incomes
+  :get-incomes
   (fn [&_]
-    {:fetch {:path incomes-path :on-success [:fetch-incomes-success]}}))
-
-(defn index-by
-  "Transform a coll to a map with a given key as a lookup value"
-  [key coll]
-  (->> coll
-       (map (juxt key identity))
-       (into {})))
+    {:firestore/get-col {:path incomes-path :on-success [:get-incomes-success]}}))
 
 (reg-event-db
-  :fetch-incomes-success
-  (fn [db [_ col-snap]]
-    (let [incomes (->> (.-docs col-snap)
-                       (map #(.data %))
-                       (map #(js->clj %))
-                       (map keywordize-keys)
-                       vec
-                       (index-by :id))]
-
-      (assoc db :incomes incomes))))
+  :get-incomes-success
+  (fn [db [_ response]]
+    (->> response
+         index-by-id
+         (assoc db :incomes))))
 

@@ -1,6 +1,7 @@
 (ns app.vendors.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by-id]]))
 
 (def vendors-path "/vendors/")
 
@@ -12,7 +13,7 @@
   :delete-vendor
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [:vendors] dissoc id)
-     :persist-delete {:path (vendor-path id)}}))
+     :firestore/delete {:path (vendor-path id)}}))
 
 (reg-event-fx
   :update-vendor
@@ -25,7 +26,7 @@
                  :revolut-id revolut-id}]
 
       {:db (update-in db [:vendors id] merge attrs)
-       :persist {:path (vendor-path id) :attrs attrs}
+       :firestore/save {:path (vendor-path id) :attrs attrs}
        :navigate-to {:path vendors-path}})))
 
 (reg-event-fx
@@ -41,3 +42,14 @@
       {:db (assoc-in db [:vendors id] init-attrs)
        :navigate-to {:path (vendor-path id)}})))
 
+(reg-event-fx
+  :get-vendors
+  (fn [&_]
+    {:firestore/get-col {:path vendors-path :on-success [:get-vendors-success]}}))
+
+(reg-event-db
+  :get-vendors-success
+  (fn [db [_ response]]
+    (->> response
+         index-by-id
+         (assoc db :vendors))))
