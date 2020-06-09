@@ -13,7 +13,6 @@
   "Transform a coll to a map with :id as a lookup value"
   [coll]
   (->> coll
-       (keywordize-keys)
-       (map (fn [value]
-              [(keyword (:id value)) (update value :id #(keyword (:id value)))]))
-       (into {})))
+       (map (juxt :id identity))
+       (into {})
+       (keywordize-keys)))
