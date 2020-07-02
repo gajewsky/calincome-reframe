@@ -12,7 +12,7 @@
 (reg-event-fx
   :delete-vendor
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:vendors] dissoc id)
+    {:db (update-in db [:vendors] dissoc (keyword id))
      :firestore/delete {:path (vendor-path id)}}))
 
 (reg-event-fx
@@ -52,4 +52,5 @@
   (fn [db [_ response]]
     (->> response
          index-by-id
+         (merge (db :vendors))
          (assoc db :vendors))))

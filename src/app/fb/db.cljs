@@ -1,7 +1,8 @@
 (ns app.fb.db
   (:require [re-frame.core :refer [reg-fx dispatch]]
             [clojure.walk :refer [keywordize-keys]]
-            ["firebase/app" :as firebase]
+            [app.fb.firebase :refer [db]]
+            [app.fb.firestore :as firestore]
             [clojure.string :as str]))
 
 (defn colsnap->maps
@@ -15,22 +16,19 @@
 (reg-fx
   :firestore/save
   (fn [{:keys [path attrs]}]
-    (let [firestore (.firestore firebase)
-          doc-ref (.doc firestore path)]
+    (let [doc-ref (.doc db path)]
       (.set doc-ref (clj->js attrs) #js {:merge true}))))
 
 (reg-fx
   :firestore/delete
   (fn [{:keys [path]}]
-    (let [firestore (.firestore firebase)
-          doc-ref (.doc firestore path)]
+    (let [doc-ref (.doc db path)]
       (.delete doc-ref))))
 
 (reg-fx
   :firestore/get-col
   (fn [{:keys [path on-success]}]
-    (let [firestore (.firestore firebase)
-          col-ref (.collection firestore path)]
+    (let [col-ref (.collection db path)]
       (-> (.get col-ref)
           (.then (fn [col-snap]
                    (let [event (->> (colsnap->maps col-snap)

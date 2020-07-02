@@ -12,7 +12,7 @@
 (reg-event-fx
   :delete-income
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:incomes] dissoc id)
+    {:db (update-in db [:incomes] dissoc (keyword id))
      :firestore/delete {:path (income-path id)}}))
 
 (reg-event-fx
@@ -53,5 +53,6 @@
   (fn [db [_ response]]
     (->> response
          index-by-id
+         (merge (db :incomes))
          (assoc db :incomes))))
 

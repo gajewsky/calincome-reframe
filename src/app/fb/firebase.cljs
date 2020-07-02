@@ -1,13 +1,17 @@
-(ns app.fb.init
-  (:require ["firebase/app" :as firebase]
+ (ns app.fb.firebase
+  (:require ["firebase/app" :as fb]
             ["firebase/firestore"]
             ["firebase/database"]
             ["firebase/auth"]))
 
-(defn firebase-init
-  []
-  (firebase/initializeApp
+(def OPTS
     #js {:apiKey "AIzaSyB7azm0ig-7IFUXRxFMjX5osJKyq8rIvos"
          :authDomain "calincome-dff65.firebaseapp.com"
          :databaseURL "https://calincome-dff65.firebaseio.com"
-         :projectId "calincome-dff65"}))
+         :projectId "calincome-dff65"})
+
+(defonce FB (fb/initializeApp OPTS))
+
+(def db (.firestore fb))
+
+(def auth (.auth fb))

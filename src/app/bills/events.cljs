@@ -10,8 +10,8 @@
 
 (reg-event-db
   :delete-bill
-  (fn [db [_ bill-id]]
-    (update-in db [:bills] dissoc bill-id)))
+  (fn [db [_ id]]
+    (update-in db [:bills] dissoc (keyword id))))
 
 (reg-event-db
   :upsert-expense
@@ -29,10 +29,10 @@
           bills-path "/bills/"]
 
       {:db (update-in db [:bills bill-id] merge {:id id
-                                     :divide? divide?
-                                     :contractor-id contractor-id
-                                     :user-id user-id
-                                     :date date })
+                                                 :divide? divide?
+                                                 :contractor-id contractor-id
+                                                 :user-id user-id
+                                                 :date date})
        :navigate-to {:path bills-path}})))
 
 (reg-event-fx
