@@ -2,7 +2,6 @@
   (:require [re-frame.core :refer [reg-fx dispatch]]
             [clojure.walk :refer [keywordize-keys]]
             [app.fb.firebase :refer [db]]
-            [app.fb.firestore :as firestore]
             [clojure.string :as str]))
 
 (defn colsnap->maps
