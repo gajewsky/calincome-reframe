@@ -52,4 +52,5 @@
   (fn [db [_ response]]
     (->> response
          index-by-id
+         (merge (db :vendors))
          (assoc db :vendors))))

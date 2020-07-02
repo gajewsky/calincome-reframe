@@ -29,10 +29,10 @@
           bills-path "/bills/"]
 
       {:db (update-in db [:bills bill-id] merge {:id id
-                                     :divide? divide?
-                                     :contractor-id contractor-id
-                                     :user-id user-id
-                                     :date date })
+                                                 :divide? divide?
+                                                 :contractor-id contractor-id
+                                                 :user-id user-id
+                                                 :date date})
        :navigate-to {:path bills-path}})))
 
 (reg-event-fx

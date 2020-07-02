@@ -50,4 +50,5 @@
   (fn [db [_ response]]
     (->> response
          index-by-id
+         (merge (db :categories))
          (assoc db :categories))))

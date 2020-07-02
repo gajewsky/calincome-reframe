@@ -53,5 +53,6 @@
   (fn [db [_ response]]
     (->> response
          index-by-id
+         (merge (db :incomes))
          (assoc db :incomes))))
 
