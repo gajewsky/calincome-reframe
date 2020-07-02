@@ -12,6 +12,6 @@
 
 (defonce FB (fb/initializeApp OPTS))
 
-(def firestore (.firestore fb))
+(def db (.firestore fb))
 
 (def auth (.auth fb))

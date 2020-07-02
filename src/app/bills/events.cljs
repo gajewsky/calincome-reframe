@@ -10,8 +10,8 @@
 
 (reg-event-db
   :delete-bill
-  (fn [db [_ bill-id]]
-    (update-in db [:bills] dissoc bill-id)))
+  (fn [db [_ id]]
+    (update-in db [:bills] dissoc (keyword id))))
 
 (reg-event-db
   :upsert-expense

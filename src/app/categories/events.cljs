@@ -12,7 +12,7 @@
 (reg-event-fx
   :delete-category
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:categories] dissoc id)
+    {:db (update-in db [:categories] dissoc (keyword id))
      :firestore/delete {:path (category-path id)}}))
 
 (reg-event-fx
