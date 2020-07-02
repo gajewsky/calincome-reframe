@@ -4,7 +4,7 @@
             [app.db]
             [app.router :as router]
             ;; -- firebase --
-            [app.fb.init :refer [firebase-init]]
+            [app.fb.firebase :refer [FB]]
             [app.fb.db]
             ;; -- auth --
             [app.auth.views.sign-up :refer [sign-up]]
@@ -84,5 +84,4 @@
   []
   (router/start!)
   (rf/dispatch-sync [:initialize-db])
-  (start)
-  (firebase-init))
+  (start))
