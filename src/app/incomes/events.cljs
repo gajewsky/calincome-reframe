@@ -3,31 +3,39 @@
             [nano-id.core :refer [nano-id]]
             [app.utils :refer [index-by-id]]))
 
-(def incomes-path "/incomes/")
+(def resource :incomes)
 
-(defn income-path
+(def index-path
+  (str "/" (name resource) "/"))
+
+(defn resource-path
   [id]
-  (str incomes-path (name id)))
+  (str index-path (name id)))
+
+(defn ref
+  [id]
+  (vector resource (name id)))
 
 (reg-event-fx
   :delete-income
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:incomes] dissoc (keyword id))
-     :firestore/delete {:path (income-path id)}}))
+    {:db (update-in db [resource] dissoc (keyword id))
+     :firestore/delete {:path (resource-path id)}}))
 
 (reg-event-fx
   :update-income
   (fn [{:keys [db]} [_ {:keys [user-id inc-category date value]}]]
     (let [id (get-in db [:nav :active-income])
-          attrs {:id id
-                 :user-id user-id
-                 :inc-category inc-category
-                 :value value
-                 :date date }]
+          reference (ref id)
+          document {:id id
+                    :user-id user-id
+                    :inc-category inc-category
+                    :value value
+                    :date date }]
 
-      {:db (update-in db [:incomes id] merge attrs)
-       :firestore/save {:path (income-path id) :attrs attrs}
-       :navigate-to {:path incomes-path}})))
+      {:db (update-in db [resource id] merge document)
+       :firestore/write! {:reference reference :document document}
+       :navigate-to {:path index-path}})))
 
 (reg-event-fx
   :create-income
@@ -35,18 +43,18 @@
     (let [id (keyword (nano-id 10))
           time-now (.now js/Date)
           init-attrs {:id id
-                 :user-id user-id
-                 :inc-category ""
-                 :value 0
-                 :date time-now
-                 :created-at time-now}]
-      {:db (assoc-in db [:incomes id] init-attrs)
-       :navigate-to {:path (income-path id)}})))
+                      :user-id user-id
+                      :inc-category ""
+                      :value 0
+                      :date time-now
+                      :created-at time-now}]
+      {:db (assoc-in db [resource id] init-attrs)
+       :navigate-to {:path (resource-path id)}})))
 
 (reg-event-fx
   :get-incomes
   (fn [&_]
-    {:firestore/get-col {:path incomes-path :on-success [:get-incomes-success]}}))
+    {:firestore/get-col {:path index-path :on-success [:get-incomes-success]}}))
 
 (reg-event-db
   :get-incomes-success
