@@ -31,7 +31,7 @@
                     :user-id user-id
                     :inc-category inc-category
                     :value value
-                    :date date }]
+                    :date date}]
 
       {:db (update-in db [resource id] merge document)
        :firestore/write! {:ref ref :document document}

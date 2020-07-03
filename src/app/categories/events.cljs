@@ -3,30 +3,38 @@
             [nano-id.core :refer [nano-id]]
             [app.utils :refer [index-by-id]]))
 
-(def categories-path "/categories/")
+(def resource :categories)
 
-(defn category-path
+(def index-path
+  (str "/" (name resource) "/"))
+
+(defn resource-path
   [id]
-  (str categories-path (name id)))
+  (str index-path (name id)))
+
+(defn ref
+  [id]
+  (vector resource (name id)))
 
 (reg-event-fx
   :delete-category
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:categories] dissoc (keyword id))
-     :firestore/delete {:path (category-path id)}}))
+    {:db (update-in db [resource] dissoc (keyword id))
+     :firestore/delete! {:ref (ref id)}}))
 
 (reg-event-fx
   :update-category
   (fn [{:keys [db]} [_ {:keys [group name description]}]]
     (let [id (get-in db [:nav :active-category])
-          attrs {:id id
-                 :group group
-                 :name name
-                 :description description}]
+          ref (ref id)
+          document {:id id
+                    :group group
+                    :name name
+                    :description description}]
 
-      {:db (update-in db [:categories id] merge attrs)
-       :firestore/save {:path (category-path id) :attrs attrs}
-       :navigate-to {:path categories-path}})))
+      {:db (update-in db [resource id] merge document)
+       :firestore/write! {:ref ref :document document}
+       :navigate-to {:path index-path}})))
 
 (reg-event-fx
   :create-category
@@ -37,18 +45,18 @@
                       :name ""
                       :description ""}]
 
-      {:db (assoc-in db [:categories id] init-attrs)
-       :navigate-to {:path (category-path id)}})))
+      {:db (assoc-in db [resource id] init-attrs)
+       :navigate-to {:path (resource-path id)}})))
 
 (reg-event-fx
   :get-categories
   (fn [&_]
-    {:firestore/get-col {:path categories-path :on-success [:get-categories-success]}}))
+    {:firestore/get-col {:ref [resource] :on-success [:get-categories-success]}}))
 
 (reg-event-db
   :get-categories-success
   (fn [db [_ response]]
     (->> response
          index-by-id
-         (merge (db :categories))
-         (assoc db :categories))))
+         (merge (db resource))
+         (assoc db resource))))
