@@ -1,44 +1,31 @@
 (ns app.fb.db
   (:require [re-frame.core :refer [reg-fx dispatch]]
             [clojure.walk :refer [keywordize-keys]]
-            [app.fb.firebase :refer [fs-db]]
             [app.fb.firestore :as firestore]
+            [clojure.core.async :as async]
             [clojure.string :as str]))
 
 (defn colsnap->maps
   [col-snap]
-  (->> (.-docs col-snap)
-       (map #(.data %))
-       (map #(js->clj %))
+  (->> col-snap
        (map keywordize-keys)
        vec))
 
 (reg-fx
   :firestore/write!
-  (fn [{:keys [reference document]}]
-    (firestore/set-db! reference document)))
+  (fn [{:keys [ref document]}]
+    (firestore/set-db! ref document)))
 
 (reg-fx
-  :firestore/save
-  (fn [{:keys [path attrs]}]
-    (let [doc-ref (.doc fs-db path)]
-      (.set doc-ref (clj->js attrs) #js {:merge true}))))
-
-(reg-fx
-  :firestore/delete
-  (fn [{:keys [path]}]
-    (let [doc-ref (.doc fs-db path)]
-      (.delete doc-ref))))
+  :firestore/delete!
+  (fn [{:keys [ref]}]
+    (firestore/delete-db! ref)))
 
 (reg-fx
   :firestore/get-col
-  (fn [{:keys [path on-success]}]
-    (let [col-ref (.collection fs-db path)]
-      (-> (.get col-ref)
-          (.then (fn [col-snap]
-                   (let [event (->> (colsnap->maps col-snap)
-                                    (conj on-success))]
-                     (dispatch event))))))))
-
-
-
+  (fn [{:keys [ref on-success]}]
+    (async/go
+      (let [colsnap (async/<! (firestore/get-db ref))
+            event (->> (colsnap->maps colsnap)
+                       (conj on-success))]
+        (dispatch event)))))

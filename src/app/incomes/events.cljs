@@ -20,13 +20,13 @@
   :delete-income
   (fn [{:keys [db]} [_ id]]
     {:db (update-in db [resource] dissoc (keyword id))
-     :firestore/delete {:path (resource-path id)}}))
+     :firestore/delete! {:ref (ref id)}}))
 
 (reg-event-fx
   :update-income
   (fn [{:keys [db]} [_ {:keys [user-id inc-category date value]}]]
     (let [id (get-in db [:nav :active-income])
-          reference (ref id)
+          ref (ref id)
           document {:id id
                     :user-id user-id
                     :inc-category inc-category
@@ -34,7 +34,7 @@
                     :date date }]
 
       {:db (update-in db [resource id] merge document)
-       :firestore/write! {:reference reference :document document}
+       :firestore/write! {:ref ref :document document}
        :navigate-to {:path index-path}})))
 
 (reg-event-fx
@@ -54,13 +54,13 @@
 (reg-event-fx
   :get-incomes
   (fn [&_]
-    {:firestore/get-col {:path index-path :on-success [:get-incomes-success]}}))
+    {:firestore/get-col {:ref [resource] :on-success [:get-incomes-success]}}))
 
 (reg-event-db
   :get-incomes-success
   (fn [db [_ response]]
     (->> response
          index-by-id
-         (merge (db :incomes))
-         (assoc db :incomes))))
+         (merge (db resource))
+         (assoc db resource))))
 
