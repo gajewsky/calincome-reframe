@@ -1,48 +1,59 @@
 (ns app.bills.views.bill-expenses
   (:require [re-frame.core :as rf]
             [reagent.core :as r]
-            [app.components.form-group :refer [form-group]]
+            [app.bills.views.expense-form-group :refer [expense-form-group]]
             [nano-id.core :refer [nano-id]]))
 
 (defn bill-expenses
-  []
+  [expenses]
   (fn []
-    (let [expenses @(rf/subscribe [:expenses])
-          initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? ""}
+    (let [initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? false}
           values (r/atom initial-values)
-          save (fn [{:keys [id description value subcategory-id track?]}]
-                 (rf/dispatch [:upsert-expense {:id (or id (keyword (nano-id 10)))
-                                                :description description
-                                                :value (js/parseInt value)
-                                                :subcategory-id subcategory-id
-                                                :track? (boolean track?)}])
-                 (reset! values initial-values))]
+          add-exp (fn [{:keys [id description value subcategory-id track?]}]
+                    (let [uniq-id (or id (keyword (nano-id 10)))]
+                      (swap! expenses assoc uniq-id {:id uniq-id
+                                                     :description description
+                                                     :value (js/parseInt value)
+                                                     :subcategory-id subcategory-id
+                                                     :track? (boolean track?)})
+                      (reset! values initial-values)))
+
+          remove-exp (fn [expense-id] (swap! expenses dissoc expense-id))]
 
       [:div {:class "cards"}
-       [:button {:on-click #(save @values)} "Add"]
-       (for [{:keys [id] :as expense} expenses]
-         (let [expense-values (r/atom expense)]
+       [:button {:on-click #(add-exp @values)} "Add"]
+       (for [expense @expenses]
+         (let [values (val expense)
+               id (key expense)]
+
            ^{:key id}
 
            [:<>
-            [form-group {:id :description
-                         :label "Description"
-                         :type "text"
-                         :values expense-values}]
-            [form-group {:id :value
-                         :label "Value"
-                         :type "number"
-                         :values expense-values}]
-            [form-group {:id :subcategory-id
-                         :label "Category"
-                         :type "text"
-                         :values expense-values}]
-            [form-group {:id :track?
-                         :label "Track?"
-                         :type "text"
-                         :values expense-values}]
-            [:button {:on-click #(save @expense-values)} "Save"]
+            [expense-form-group {:field-id :description
+                                 :label "Description"
+                                 :type "text"
+                                 :values values
+                                 :expense-id id
+                                 :expenses expenses}]
+            [expense-form-group {:field-id :value
+                                 :label "Value"
+                                 :type "number"
+                                 :values values
+                                 :expense-id id
+                                 :expenses expenses}]
+            [expense-form-group {:field-id :subcategory-id
+                                 :label "Category"
+                                 :type "text"
+                                 :values values
+                                 :expense-id id
+                                 :expenses expenses}]
+            [expense-form-group {:field-id :track?
+                                 :label "Track?"
+                                 :type "text"
+                                 :values values
+                                 :expense-id id
+                                 :expenses expenses}]
             [:button {:on-click #(when (js/confirm "Are you sure?")
-                                   (rf/dispatch [:delete-expense id]))}
+                                   (remove-exp id))}
              "Delete"]]))])))
 

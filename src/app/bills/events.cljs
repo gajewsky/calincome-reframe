@@ -2,38 +2,37 @@
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
             [nano-id.core :refer [nano-id]]))
 
-(reg-event-db
-  :delete-expense
-  (fn [db [_ expense-id]]
-    (let [bill-id (get-in db [:nav :active-bill])]
-      (update-in db [:bills bill-id :expenses] dissoc expense-id))))
+(def resource :bills)
+
+(def index-path
+  (str "/" (name resource) "/"))
+
+(defn ref
+  [id]
+  (vector resource (name id)))
 
 (reg-event-db
   :delete-bill
   (fn [db [_ id]]
     (update-in db [:bills] dissoc (keyword id))))
 
-(reg-event-db
-  :upsert-expense
-  (fn [db [_ {:keys [id description value subcategory-id track?]}]]
-    (let [bill-id (get-in db [:nav :active-bill])]
-      (assoc-in db [:bills bill-id :expenses id] {:id id
-                                                  :description description
-                                                  :value value
-                                                  :subcategory-id subcategory-id
-                                                  :track? track?}))))
 (reg-event-fx
   :update-bill
-  (fn [{:keys [db]} [_ {:keys [id divide? contractor-id user-id date]}]]
-    (let [bill-id (get-in db [:nav :active-bill])
-          bills-path "/bills/"]
+  (fn [{:keys [db]} [_ {:keys [divide? contractor-id user-id date expenses]}]]
+    (let [id (get-in db [:nav :active-bill])
+          ref (ref id)
+          document {:id id
+                    :divide? divide?
+                    :contractor-id contractor-id
+                    :user-id user-id
+                    :date date
+                    :expenses expenses}
+          doc-batch {:bill document
+                     :expenses (vals expenses)}]
 
-      {:db (update-in db [:bills bill-id] merge {:id id
-                                                 :divide? divide?
-                                                 :contractor-id contractor-id
-                                                 :user-id user-id
-                                                 :date date})
-       :navigate-to {:path bills-path}})))
+      {:db (update-in db [resource id] merge document)
+       ; :firestore/write-batch! {:doc-batch doc-batch}
+       :navigate-to {:path index-path}})))
 
 (reg-event-fx
   :create-bill
