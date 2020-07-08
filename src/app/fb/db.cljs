@@ -18,25 +18,20 @@
 
 (reg-fx
   :firestore/write-batch!
-  (fn [{:keys [ref doc-batch]}]
+  (fn [{:keys [doc-batch]}]
     (async/go
-      (let [new-exp-ids (keys (:expenses doc-batch))
-            bill (:bill doc-batch)
+      (let [bill (:bill doc-batch)
             bill-ref [:bills (name (:id bill))]
             expenses (:expenses doc-batch)
             batch (firestore/create-batch)]
 
-        ; (.log js/console "expenses" expenses)
-        ; (.log js/console "expenses" expenses)
-        ; (firestore/set-db! bill-ref bill {:batch batch})
-        ; (firestore/set-db! [:expenses "dupa1"] {:value 1} {:batch batch})
-        ; (firestore/set-db! [:expenses "dupa2"] {:value 1} {:batch batch})
-        ; (async/<! (firestore/commit-batch! batch))
-        )
-      )
+        (firestore/set-db! bill-ref bill {:batch batch})
 
-
-    ))
+        (doall
+          (for [exp expenses]
+            (let [exp-ref [:expenses (:id exp)]]
+              (firestore/set-db! exp-ref exp {:batch batch}))))
+        (async/<! (firestore/commit-batch! batch))))))
 
 (reg-fx
   :firestore/delete!

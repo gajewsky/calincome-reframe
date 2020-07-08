@@ -1,3 +1,5 @@
+; Taken from https://github.com/samedhi/firemore/blob/master/src/firemore/firestore.cljs
+
 (ns app.fb.firestore
   (:require
    [cljs.core.async :as async]

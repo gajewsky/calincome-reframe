@@ -7,12 +7,13 @@
 (defn bill-expenses
   [expenses]
   (fn []
-    (let [initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? false}
+    (let [bill-id (:id @(rf/subscribe [:bill]))
+          initial-values {:id nil :description "" :value 0 :subcategory-id "" :track? false}
           values (r/atom initial-values)
           add-exp (fn [{:keys [id description value subcategory-id track?]}]
                     (let [uniq-id (or id (keyword (nano-id 10)))]
-                      (swap! expenses assoc uniq-id {:id uniq-id
-                                                     :description description
+                      (swap! expenses assoc uniq-id {:id (name uniq-id)
+                                                     :bill-id bill-id                                                    :description description
                                                      :value (js/parseInt value)
                                                      :subcategory-id subcategory-id
                                                      :track? (boolean track?)})
