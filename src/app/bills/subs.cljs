@@ -13,8 +13,7 @@
      (get-in db [:bills active-bill]))))
 
 (reg-sub
- :expenses
- (fn [db _]
-   (let [active-bill (get-in db [:nav :active-bill])
-         expenses (get-in db [:bills active-bill :expenses])]
-     (vals expenses))))
+  :expenses
+  (fn [db _]
+    (let [active-bill (get-in db [:nav :active-bill]) ]
+      (get-in db [:bills active-bill :expenses]))))

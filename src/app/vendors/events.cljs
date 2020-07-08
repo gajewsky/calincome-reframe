@@ -3,31 +3,39 @@
             [nano-id.core :refer [nano-id]]
             [app.utils :refer [index-by-id]]))
 
-(def vendors-path "/vendors/")
+(def resource :vendors)
 
-(defn vendor-path
+(def index-path
+  (str "/" (name resource) "/"))
+
+(defn resource-path
   [id]
-  (str vendors-path (name id)))
+  (str index-path (name id)))
+
+(defn ref
+  [id]
+  (vector resource (name id)))
 
 (reg-event-fx
   :delete-vendor
   (fn [{:keys [db]} [_ id]]
-    {:db (update-in db [:vendors] dissoc (keyword id))
-     :firestore/delete {:path (vendor-path id)}}))
+    {:db (update-in db [resource] dissoc (keyword id))
+     :firestore/delete! {:ref (ref id)}}))
 
 (reg-event-fx
   :update-vendor
   (fn [{:keys [db]} [_ {:keys [name description category revolut-id]}]]
     (let [id (get-in db [:nav :active-vendor])
-          attrs {:id id
-                 :name name
-                 :description description
-                 :category category
-                 :revolut-id revolut-id}]
+          ref (ref id)
+          document {:id id
+                    :name name
+                    :description description
+                    :category category
+                    :revolut-id revolut-id}]
 
-      {:db (update-in db [:vendors id] merge attrs)
-       :firestore/save {:path (vendor-path id) :attrs attrs}
-       :navigate-to {:path vendors-path}})))
+      {:db (update-in db [resource id] merge document)
+       :firestore/write! {:ref ref :document document}
+       :navigate-to {:path index-path}})))
 
 (reg-event-fx
   :create-vendor
@@ -39,18 +47,18 @@
                       :category ""
                       :revolut-id ""}]
 
-      {:db (assoc-in db [:vendors id] init-attrs)
-       :navigate-to {:path (vendor-path id)}})))
+      {:db (assoc-in db [resource id] init-attrs)
+       :navigate-to {:path (resource-path id)}})))
 
 (reg-event-fx
   :get-vendors
   (fn [&_]
-    {:firestore/get-col {:path vendors-path :on-success [:get-vendors-success]}}))
+    {:firestore/get-col {:ref [resource] :on-success [:get-vendors-success]}}))
 
 (reg-event-db
   :get-vendors-success
   (fn [db [_ response]]
     (->> response
          index-by-id
-         (merge (db :vendors))
-         (assoc db :vendors))))
+         (merge (db resource))
+         (assoc db resource))))

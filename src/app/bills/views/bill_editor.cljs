@@ -8,12 +8,14 @@
   []
   (let [bill @(rf/subscribe [:bill])
         values (r/atom bill)
+        expenses (r/atom @(rf/subscribe [:expenses]))
         save (fn [{:keys [id divide? contractor-id user-id date]}]
                (rf/dispatch [:update-bill {:id id
                                            :divide? divide?
                                            :contractor-id contractor-id
                                            :user-id user-id
-                                           :date date }]))]
+                                           :date date
+                                           :expenses @expenses }]))]
     [:<>
      [form-group {:id :divide?
                   :label "Divide?"
@@ -33,5 +35,5 @@
                   :values values}]
      [:button {:on-click #(save @values)} "Save"]
      [:div "Expenses:"
-      [bill-expenses]]]))
+      [bill-expenses expenses]]]))
 
