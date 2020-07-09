@@ -31,6 +31,10 @@
        {:db (assoc nav :active-vendor (keyword (:vendor-id route-params)))
         :dispatch [:get-vendors]}
 
+       :bills
+       {:db nav
+        :dispatch [:get-bills]}
+
        :bill
        {:db (assoc nav :active-bill (keyword (:bill-id route-params)))}
 

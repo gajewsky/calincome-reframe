@@ -1,6 +1,7 @@
 (ns app.bills.events
   (:require [re-frame.core :refer [reg-event-db reg-event-fx]]
-            [nano-id.core :refer [nano-id]]))
+            [nano-id.core :refer [nano-id]]
+            [app.utils :refer [index-by-id]]))
 
 (def resource :bills)
 
@@ -57,3 +58,15 @@
                                                                :track? false}}})
        :navigate-to {:path bill-path}})))
 
+(reg-event-fx
+  :get-bills
+  (fn [&_]
+    {:firestore/get-col {:ref [resource] :on-success [:get-bills-success]}}))
+
+(reg-event-db
+  :get-bills-success
+  (fn [db [_ response]]
+    (->> response
+         index-by-id
+         (merge (db resource))
+         (assoc db resource))))
